@@ -5,7 +5,15 @@ ruby-http-file-server
 
 ## Description
 
-This is super simple ruby app to serve files over http
+This is super simple ruby app to serve files over http, useful as a basic file server to quickly share files
+
+Spec:
+
+* use http
+* provide a list of files as html and json
+* serve files as individual files
+* minimal config
+
 
 ## Contents
 
@@ -26,9 +34,13 @@ How to use:
 
 Using this could not be simpler, that is the idea...
 
-1) Obtain an copy of the app
+1) Obtain an copy of the app, git clone or whatever
 
-2) Edit the CODE with the path to the directory of files to serve
+2) Edit the path to the directory of files to served in config section
+
+```
+FILE_SERVER_DIR_PATH = '/path/to/dir'
+```
 
 3) Download any pre-requisite gems that are required;
 
@@ -51,6 +63,12 @@ ruby http-file-server.rb
 == Sinatra/1.3.3 has taken the stage on 4567 for development with backup from WEBrick
 [2012-09-07 22:12:51] INFO  WEBrick::HTTPServer#start: pid=4060 port=4567
 ```
+
+## Configured routes
+
+* http://host:port/files.html - will display list of files as html
+* http://host:port/files.json - will return list of files in json
+* http://host:port/files/:id eg http://localhost:4567/files/2 - will initiate download of file id
 
 
 
