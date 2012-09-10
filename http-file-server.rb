@@ -1,6 +1,12 @@
 #!/usr/bin/env ruby
 # encoding: UTF-8
 
+###
+# http-file-server - A simple Ruby app serving files over HTTP
+# (c) 2012 Robert Murray
+# @see https://github.com/rob-murray/ruby-http-file-server
+# http-file-server may be freely distributed under the MIT license
+###
 require 'sinatra'
 require 'json'
 

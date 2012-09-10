@@ -17,7 +17,7 @@ Spec:
 
 ## Contents
 
-This repository contains the following sections:
+This repository contains the following files:
 
 1. http-file-server.rb - the application file
 
