@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'http file server' do
-    include Webrat::Matchers
+    include Webrat::Matchers # allow cool html matching
 
 
     context 'given an empty list of files' do
@@ -116,6 +116,8 @@ describe 'http file server' do
             end
 
             xit 'will return the file as requested' do
+
+                # havent worked out how to test this yet.
 
                 get '/files/0'
 
