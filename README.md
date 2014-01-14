@@ -1,11 +1,13 @@
 ruby-http-file-server
 =====================
 
+[![Build Status](https://travis-ci.org/rob-murray/ruby-http-file-server.png?branch=master)](https://travis-ci.org/rob-murray/ruby-http-file-server)
+
 # A simple Ruby app serving files over HTTP
 
 ## Description
 
-This is super simple ruby app to serve files over http, useful as a basic file server to quickly share files
+This is super simple ruby app to serve files over **http**, useful as a basic file server to quickly share files on your local network or something.
 
 Spec:
 
@@ -19,56 +21,54 @@ Spec:
 
 This repository contains the following files:
 
-1. http-file-server.rb - the application file
+1. `src/http-file-server.rb` - the application file
+2. `run.rb` - a quick wrapper to 
+2. `spec` - the tests
 
 ## Pre-requisites
 
-The only Ruby gems required are;
+The only Ruby gems required are... wait... and... applause;
 
-* sinatra
-* json
+* [Sinatra](http://www.sinatrarb.com/)
 
 ## Getting started
 
 How to use:
 
-Using this could not be simpler, that is the idea...
+Using this could not be simpler, that is the idea... (soon to be even simpler!)
 
-1) Obtain an copy of the app, git clone or whatever
+1) Obtain an copy of the app file `src/http-file-server.rb`, git clone, `wget` or whatever
 
 2) Edit the path to the directory of files to served in config section
 
-```
+```ruby
 FILE_SERVER_DIR_PATH = '/path/to/dir'
 ```
 
-3) Download any pre-requisite gems that are required;
+3) Download Sinatra if required;
 
-```
+```bash
 gem install sinatra
-gem install json
 ```
 
-4) Fire up the app with this simple line
+4) Either grab the `run.rb` file or concoct your own `config.ru` file (see Sinatra docs)
 
-```
-ruby http-file-server.rb
-```
 
-4) Identify the port used (Hint: see line 3) and connect eg: http://localhost:4567/files.html
+** Identify the port used (Hint: see line 4 below) and connect eg: http://localhost:4567/files.html
 
-```
-[2012-09-07 22:12:51] INFO  WEBrick 1.3.1
-[2012-09-07 22:12:51] INFO  ruby 1.9.3 (2012-04-20) [i686-linux]
-== Sinatra/1.3.3 has taken the stage on 4567 for development with backup from WEBrick
-[2012-09-07 22:12:51] INFO  WEBrick::HTTPServer#start: pid=4060 port=4567
+```bash
+Puma 1.6.3 starting...
+* Min threads: 0, max threads: 16
+* Environment: development
+* Listening on tcp://localhost:4567
+== Sinatra/1.4.4 has taken the stage on 4567 for development with backup from Puma
 ```
 
 ## Configured routes
 
 * http://host:port/files.html - will display list of files as html
 * http://host:port/files.json - will return list of files in json
-* http://host:port/files/:id eg http://localhost:4567/files/2 - will initiate download of file id
+* http://host:port/files/:id e.g. http://localhost:4567/files/2 - will initiate download of file id
 
 
 
