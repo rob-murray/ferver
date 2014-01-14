@@ -1,11 +1,10 @@
-ruby-http-file-server
-=====================
+## ruby-http-file-server
 
 [![Build Status](https://travis-ci.org/rob-murray/ruby-http-file-server.png?branch=master)](https://travis-ci.org/rob-murray/ruby-http-file-server)
 
-# A simple Ruby app serving files over HTTP
+#### A simple Ruby app serving files over HTTP
 
-## Description
+### Description
 
 This is super simple ruby app to serve files over **http**, useful as a basic file server to quickly share files on your local network or something.
 
@@ -17,7 +16,7 @@ Spec:
 * minimal config
 
 
-## Contents
+### Contents
 
 This repository contains the following files:
 
@@ -31,7 +30,7 @@ The only Ruby gems required are... wait... and... applause;
 
 * [Sinatra](http://www.sinatrarb.com/)
 
-## Getting started
+### Getting started
 
 How to use:
 
@@ -64,7 +63,7 @@ Puma 1.6.3 starting...
 == Sinatra/1.4.4 has taken the stage on 4567 for development with backup from Puma
 ```
 
-## Configured routes
+### Configured routes
 
 * http://host:port/files.html - will display list of files as html
 * http://host:port/files.json - will return list of files in json
@@ -72,11 +71,11 @@ Puma 1.6.3 starting...
 
 
 
-## Contributions
+### Contributions
 
 Please use the GitHub pull-request mechanism to submit contributions.
 
-## License
+### License
 
 This project is available for use under the MIT software license.
 See LICENSE
