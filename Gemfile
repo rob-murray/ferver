@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-
+gem "rake"
 gem "sinatra", "~> 1.4.4"
 
 
