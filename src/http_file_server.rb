@@ -54,7 +54,7 @@ class HttpFileServer < Sinatra::Base
   # /files/:id
   get '/files/:id' do
     
-    id = Integer(params[:id])
+    id = params[:id].to_i
     
     if id < @file_list.size
 

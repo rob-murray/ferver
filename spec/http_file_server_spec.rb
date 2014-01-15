@@ -107,9 +107,17 @@ describe 'http file server' do
 
         context 'downloading a file' do
 
-            it 'will return not_found for invalid file request' do
+            it 'will return not_found for file id out of range' do # urrrghhh; improve this
 
                 get '/files/3'
+
+                expect(last_response).to be_not_found
+
+            end
+
+            it 'will return not_found for invalid file request' do 
+
+                get '/files/foo'
 
                 expect(last_response).to be_not_found
 
