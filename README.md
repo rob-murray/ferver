@@ -6,11 +6,11 @@
 
 ### Description
 
-This is super simple ruby app to serve files over **http**, useful as a basic file server to quickly share files on your local network or something.
+This is super, simple ruby app to serve files over **http**, useful as a basic file server to quickly share files on your local network or something.
 
 Spec:
 
-* use http
+* available over http
 * provide a list of files as html and json
 * serve files as individual files
 * minimal config
@@ -32,19 +32,19 @@ The only Ruby gems required are... wait... and... applause;
 
 ### Getting started
 
-How to use:
+How to use this util:
 
 Using this could not be simpler, that is the idea... (soon to be even simpler!)
 
-1) Obtain an copy of the app file `src/http-file-server.rb`, git clone, `wget` or whatever
+1) Obtain an copy of the app file `src/http-file-server.rb`, git clone, `wget` or whatever you want.
 
-2) Edit the path to the directory of files to served in config section
+2) Edit the path to the directory of files to served in config section.
 
 ```ruby
 FILE_SERVER_DIR_PATH = '/path/to/dir'
 ```
 
-3) Download Sinatra if required;
+3) Install the Sinatra gem if not present already;
 
 ```bash
 gem install sinatra
@@ -64,6 +64,8 @@ Puma 1.6.3 starting...
 ```
 
 ### Configured routes
+
+Here is how to access the files and file list.
 
 * http://host:port/files.html - will display list of files as html
 * http://host:port/files.json - will return list of files in json
