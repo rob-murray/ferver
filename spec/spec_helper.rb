@@ -2,9 +2,10 @@ require 'rubygems'
 require 'spork'
 require 'coveralls'
 
-ENV['RACK_ENV'] = 'test'  # force the environment to 'test'
+# force the environment to 'test'
+ENV['RACK_ENV'] = 'test' 
 
-Coveralls.wear!
+Coveralls.wear! # this uses SimpleCov under its bonnet
 
 Spork.prefork do
   require File.join(File.dirname(__FILE__), '..', '/src/', 'ferver')
