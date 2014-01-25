@@ -16,8 +16,8 @@ class Ferver < Sinatra::Base
 
   # Config
 
-  # The full path to the directory to be served 
-  FILE_SERVER_DIR_PATH = '/tmp'
+  # The full path to the directory to be served
+  DEFAULT_FILE_SERVER_DIR_PATH = '/tmp'
 
   @file_list = []
 
@@ -58,7 +58,7 @@ class Ferver < Sinatra::Base
     
     if id < @file_list.size
 
-      file = "#{FILE_SERVER_DIR_PATH}/#{@file_list[id]}"
+      file = "#{get_current_url}/#{@file_list[id]}" # todo: urgghh -> move this
 
       send_file(file, :disposition => 'attachment', :filename => File.basename(file))
 
@@ -75,9 +75,11 @@ class Ferver < Sinatra::Base
   before do
     
     @file_list = [] #redef array ie clear and read list again
+
+    current_directory = get_current_url
     
     #simple loop to add all files in Dir to array,excluding . and ..
-    Dir.foreach(FILE_SERVER_DIR_PATH) do |file|
+    Dir.foreach(current_directory) do |file|
 
       next if file == '.' or file == '..'
 
@@ -85,7 +87,13 @@ class Ferver < Sinatra::Base
 
     end
 
-  end  
+  end
+
+  private
+
+  def get_current_url
+    DEFAULT_FILE_SERVER_DIR_PATH
+  end
 
 
 end

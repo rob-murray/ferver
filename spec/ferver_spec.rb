@@ -3,6 +3,21 @@ require 'spec_helper'
 describe 'ferver' do
     include Webrat::Matchers # allow cool html matching
 
+    DEFAULT_FERVER_DIR = '/tmp'
+
+
+    context 'test serving directory' do # todo: reword this
+
+
+        it 'will use default directory when none specified' do
+
+            Dir.expects(:foreach).with(DEFAULT_FERVER_DIR).returns([])
+            get '/files.html'
+
+        end
+
+    end
+
 
     context 'given an empty list of files' do
 
