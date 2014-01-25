@@ -5,6 +5,31 @@ describe 'ferver' do
 
     DEFAULT_FERVER_DIR = '/tmp'
 
+    context 'given a request to the server root' do
+
+        before(:each) do
+            get '/'
+        end
+
+
+        it 'should return redirect' do
+
+            expect(last_response).to be_redirect
+
+        end
+
+        it 'should redirect to file list' do
+
+            follow_redirect!
+
+            expect(last_response).to be_ok
+            expect(last_request.url).to eq('http://example.org/files.html') 
+            # this 'http://example.org/' appears to be what Rack test inserts? do I care - im only interested in the /files.html
+
+        end
+
+    end
+
 
     context 'test serving directory' do # todo: reword this
 

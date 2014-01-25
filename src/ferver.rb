@@ -21,6 +21,14 @@ class Ferver < Sinatra::Base
 
   @file_list = []
 
+  # redirect to file list
+  # /
+  get '/' do
+
+    redirect to('/files.html')
+
+  end
+
 
   # list files
   # /files.html
