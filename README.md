@@ -1,6 +1,6 @@
 ## Ferver = File-Server
 
-[![Build Status](https://travis-ci.org/rob-murray/ruby-http-file-server.png?branch=master)](https://travis-ci.org/rob-murray/ruby-http-file-server)
+[![Build Status](https://travis-ci.org/rob-murray/ferver.png?branch=master)](https://travis-ci.org/rob-murray/ferver)
 
 #### Ferver: A simple Ruby app serving files over HTTP
 
