@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'http file server' do
+describe 'ferver' do
     include Webrat::Matchers # allow cool html matching
 
 

@@ -2,7 +2,7 @@
 # encoding: UTF-8
 
 ###
-# http-file-server - A simple Ruby app serving files over HTTP
+# ferver - A simple Ruby app serving files over HTTP
 # (c) 2014 Robert Murray
 # @see https://github.com/rob-murray/ruby-http-file-server
 # http-file-server may be freely distributed under the MIT license
@@ -12,7 +12,7 @@ require "json"
 require "sinatra/base"
 
 
-class HttpFileServer < Sinatra::Base
+class Ferver < Sinatra::Base
 
   # Config
 

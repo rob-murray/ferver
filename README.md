@@ -1,8 +1,8 @@
-## ruby-http-file-server
+## Ferver = File-Server
 
 [![Build Status](https://travis-ci.org/rob-murray/ruby-http-file-server.png?branch=master)](https://travis-ci.org/rob-murray/ruby-http-file-server)
 
-#### A simple Ruby app serving files over HTTP
+#### Ferver: A simple Ruby app serving files over HTTP
 
 ### Description
 
@@ -20,7 +20,7 @@ Spec:
 
 This repository contains the following files:
 
-1. `src/http-file-server.rb` - the application file
+1. `src/ferver.rb` - the application file
 2. `run.rb` - a quick wrapper to 
 2. `spec` - the tests
 
@@ -36,7 +36,7 @@ How to use this util:
 
 Using this could not be simpler, that is the idea... (soon to be even simpler!)
 
-1) Obtain an copy of the app file `src/http-file-server.rb`, git clone, `wget` or whatever you want.
+1) Obtain an copy of the app file `src/ferver.rb`, git clone, `wget` or whatever you want.
 
 2) Edit the path to the directory of files to served in config section.
 

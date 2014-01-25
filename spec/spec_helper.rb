@@ -4,7 +4,7 @@ require 'spork'
 ENV['RACK_ENV'] = 'test'  # force the environment to 'test'
 
 Spork.prefork do
-  require File.join(File.dirname(__FILE__), '..', '/src/', 'http_file_server')
+  require File.join(File.dirname(__FILE__), '..', '/src/', 'ferver')
 
   require 'rubygems'
   require 'sinatra'
@@ -24,7 +24,7 @@ Spork.prefork do
   end
 
   def app
-    @app ||= HttpFileServer
+    @app ||= Ferver
   end
 end
 

@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), 'src/', 'http_file_server')
+require File.join(File.dirname(__FILE__), 'src/', 'ferver')
 
 #  Run!
-HttpFileServer.run!
+Ferver.run!
