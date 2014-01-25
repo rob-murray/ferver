@@ -1,6 +1,6 @@
 ## Ferver = File-Server
 
-[![Build Status](https://travis-ci.org/rob-murray/ferver.png?branch=master)](https://travis-ci.org/rob-murray/ferver) [![Code Climate](https://codeclimate.com/github/rob-murray/ferver.png)](https://codeclimate.com/github/rob-murray/ferver) [![Coverage Status](https://coveralls.io/repos/rob-murray/ferver/badge.png)](https://coveralls.io/r/rob-murray/ferver)
+[![Build Status](https://travis-ci.org/rob-murray/ferver.png?branch=master)](https://travis-ci.org/rob-murray/ferver) [![Code Climate](https://codeclimate.com/github/rob-murray/ferver.png)](https://codeclimate.com/github/rob-murray/ferver) [![Coverage Status](https://coveralls.io/repos/rob-murray/ferver/badge.png)](https://coveralls.io/r/rob-murray/ferver) [![Dependency Status](https://gemnasium.com/rob-murray/ferver.png)](https://gemnasium.com/rob-murray/ferver)
 
 #### Ferver: A simple Ruby app serving files over HTTP
 
@@ -32,11 +32,11 @@ The only Ruby gems required are... wait... and... applause;
 
 ### Getting started
 
-How to use this util:
+How to use this utility:
 
 Using this could not be simpler, that is the idea... (soon to be even simpler!)
 
-1) Obtain an copy of the app file `src/ferver.rb`, git clone, `wget` or whatever you want.
+1) Obtain an copy of the app file `src/ferver.rb` via `git clone`, `wget` or whatever you want.
 
 2) Edit the path to the directory of files to served in config section.
 
