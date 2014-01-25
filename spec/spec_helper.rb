@@ -1,7 +1,10 @@
 require 'rubygems'
 require 'spork'
+require 'coveralls'
 
 ENV['RACK_ENV'] = 'test'  # force the environment to 'test'
+
+Coveralls.wear!
 
 Spork.prefork do
   require File.join(File.dirname(__FILE__), '..', '/src/', 'ferver')
@@ -11,15 +14,12 @@ Spork.prefork do
   require 'rspec'
   require 'rack/test'
   require 'webrat'
-  require 'coveralls'
-
+  
   # test environment stuff
   set :environment, :testf
   set :run, false
   set :raise_errors, true
   set :logging, false
-
-  Coveralls.wear!
 
   RSpec.configure do |conf|
     conf.include Rack::Test::Methods
