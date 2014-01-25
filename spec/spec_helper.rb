@@ -11,12 +11,15 @@ Spork.prefork do
   require 'rspec'
   require 'rack/test'
   require 'webrat'
+  require 'coveralls'
 
   # test environment stuff
   set :environment, :testf
   set :run, false
   set :raise_errors, true
   set :logging, false
+
+  Coveralls.wear!
 
   RSpec.configure do |conf|
     conf.include Rack::Test::Methods
