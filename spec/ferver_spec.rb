@@ -48,6 +48,7 @@ describe 'ferver' do
 
         before(:each) do
             Dir.stubs(:foreach).returns([])
+            File.stubs(:file?).returns(true)
         end
 
         it 'will return empty list as html' do
@@ -79,6 +80,7 @@ describe 'ferver' do
 
         before(:each) do
             Dir.stubs(:foreach).multiple_yields("file1", "file2")
+            File.stubs(:file?).returns(true)
         end
 
         it 'will return a list as html' do
@@ -120,6 +122,7 @@ describe 'ferver' do
 
             before(:each) do
                 Dir.stubs(:foreach).multiple_yields(".", "..", "file1")
+                File.stubs(:file?).returns(true)
             end
 
             it 'will return only files as html' do
@@ -133,6 +136,38 @@ describe 'ferver' do
             end
 
             it 'will return only files as json' do
+
+                get '/files.json'
+                expect(last_response).to be_ok
+
+                list = JSON.parse last_response.body
+                expect(list.count).to eq(1)
+                expect(list).to match_array(valid_file_list)
+
+            end
+
+        end
+
+        context 'given a list of files and directory' do
+
+            valid_file_list = ["file1"]
+
+            before(:each) do
+                Dir.stubs(:foreach).multiple_yields("file1", "a_directory")
+                File.stubs(:file?).returns(true, false)
+            end
+
+            it 'will only list files as html' do
+
+                get '/files.html'
+                expect(last_response).to be_ok
+
+                expect(last_response.body).to have_selector("li", :count => 1)
+                expect(last_response.body).to have_selector("a", :content => valid_file_list.first)
+
+            end
+
+            it 'will only list files as json' do
 
                 get '/files.json'
                 expect(last_response).to be_ok

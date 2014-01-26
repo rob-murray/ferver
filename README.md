@@ -12,6 +12,7 @@ Spec:
 
 * available over http
 * provide a list of files as html and json
+* ignore directories
 * serve files as individual files
 * minimal config
 
@@ -21,7 +22,7 @@ Spec:
 This repository contains the following files:
 
 1. `src/ferver.rb` - the application file
-2. `run.rb` - a quick wrapper to 
+2. `run.rb` - a quick wrapper to run the application
 2. `spec` - the tests
 
 ## Pre-requisites
@@ -36,7 +37,7 @@ How to use this utility:
 
 Using this could not be simpler, that is the idea... (soon to be even simpler!)
 
-1) Obtain an copy of the app file `src/ferver.rb` via `git clone`, `wget` or whatever you want.
+1) Obtain an copy of the app file `src/ferver.rb` via `git clone`, `wget` or however you want.
 
 2) Edit the path to the directory of files to served in config section.
 

@@ -4,7 +4,7 @@
 ###
 # ferver - A simple Ruby app serving files over HTTP
 # (c) 2014 Robert Murray
-# @see https://github.com/rob-murray/ruby-http-file-server
+# @see https://github.com/rob-murray/ferver
 # http-file-server may be freely distributed under the MIT license
 ###
 require "sinatra"
@@ -82,7 +82,7 @@ class Ferver < Sinatra::Base
   # before each block
   before do
     
-    @file_list = [] #redef array ie clear and read list again
+    @file_list = []
 
     current_directory = get_current_url
     
@@ -91,7 +91,7 @@ class Ferver < Sinatra::Base
 
       next if file == '.' or file == '..'
 
-      @file_list.push(file)
+      @file_list.push(file) if File.file?(file)
 
     end
 
