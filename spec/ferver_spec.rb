@@ -41,6 +41,15 @@ describe 'ferver' do
 
         end
 
+        it 'will use the directory passed via configuration when present' do
+
+            Ferver.set :ferver_path, '/foo'
+
+            Dir.expects(:foreach).with('/foo').returns([])
+            get '/files.html'
+
+        end
+
     end
 
 
@@ -57,6 +66,8 @@ describe 'ferver' do
             expect(last_response).to be_ok
             
             expect(last_response.body).not_to have_selector("a")
+
+            expect(last_response.body).to contain(/0 files/)
 
         end
 
@@ -89,6 +100,8 @@ describe 'ferver' do
             expect(last_response).to be_ok
 
             expect(last_response.body).to have_selector("li", :count => 2)
+
+            expect(last_response.body).to contain(/2 files/)
 
         end
 
@@ -133,6 +146,8 @@ describe 'ferver' do
                 expect(last_response.body).to have_selector("li", :count => 1)
                 expect(last_response.body).to have_selector("a", :content => valid_file_list.first)
 
+                expect(last_response.body).to contain(/1 files/)
+
             end
 
             it 'will return only files as json' do
@@ -164,6 +179,7 @@ describe 'ferver' do
 
                 expect(last_response.body).to have_selector("li", :count => 1)
                 expect(last_response.body).to have_selector("a", :content => valid_file_list.first)
+                expect(last_response.body).to contain(/1 files/)
 
             end
 

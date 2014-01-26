@@ -42,7 +42,7 @@ class Ferver < Sinatra::Base
 
     end
 
-    content += "</ul></p></body></html>"
+    content += "</ul></p><p>#{@file_list.size} files served from: #{get_current_ferver_path}</p></body></html>"
     
   end
 
@@ -66,7 +66,7 @@ class Ferver < Sinatra::Base
     
     if id < @file_list.size
 
-      file = "#{get_current_url}/#{@file_list[id]}" # todo: urgghh -> move this
+      file = "#{get_current_ferver_path}/#{@file_list[id]}" # todo: urgghh -> move this
 
       send_file(file, :disposition => 'attachment', :filename => File.basename(file))
 
@@ -84,9 +84,8 @@ class Ferver < Sinatra::Base
     
     @file_list = []
 
-    current_directory = get_current_url
+    current_directory = get_current_ferver_path
     
-    #simple loop to add all files in Dir to array,excluding . and ..
     Dir.foreach(current_directory) do |file|
 
       next if file == '.' or file == '..'
@@ -99,8 +98,18 @@ class Ferver < Sinatra::Base
 
   private
 
-  def get_current_url
-    DEFAULT_FILE_SERVER_DIR_PATH
+  def get_current_ferver_path
+
+    if settings.respond_to?(:ferver_path) and settings.ferver_path
+
+      settings.ferver_path
+
+    else
+
+      DEFAULT_FILE_SERVER_DIR_PATH
+
+    end
+
   end
 
 

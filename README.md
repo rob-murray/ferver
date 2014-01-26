@@ -15,6 +15,7 @@ Spec:
 * ignore directories
 * serve files as individual files
 * minimal config
+* able to specify the directory to serve files from
 
 
 ### Contents
@@ -39,19 +40,31 @@ Using this could not be simpler, that is the idea... (soon to be even simpler!)
 
 1) Obtain an copy of the app file `src/ferver.rb` via `git clone`, `wget` or however you want.
 
-2) Edit the path to the directory of files to served in config section.
-
-```ruby
-FILE_SERVER_DIR_PATH = '/path/to/dir'
-```
-
-3) Install the Sinatra gem if not present already;
+2) Install the Sinatra gem if not present already;
 
 ```bash
 gem install sinatra
 ```
 
-4) Either grab the `run.rb` file or concoct your own `config.ru` file (see Sinatra docs)
+3) Either grab the `run.rb` file or concoct your own `config.ru` file (see Sinatra docs)
+
+4) If you're using the file from step 3 then you can pass in the directory you wish to serve files from as the first argument.
+
+For exmple, to serve files from **/Users/rob/Projects/ferver/** directory pass the path in as below;
+
+```bash
+
+ruby run.rb /Users/rob/Projects/ferver/
+
+```
+
+Or from the current directory;
+
+```bash
+
+ruby run.rb ./
+
+```
 
 
 ** Identify the port used (Hint: see line 4 below) and connect eg: http://localhost:4567/files.html
