@@ -16,10 +16,8 @@ class Ferver < Sinatra::Base
 
   # Config
 
-  # The full path to the directory to be served
-  DEFAULT_FILE_SERVER_DIR_PATH = '/tmp'
-
-  @file_list = []
+  # By default, serve files from current location
+  DEFAULT_FILE_SERVER_DIR_PATH = './'
 
   # redirect to file list
   # /
@@ -66,7 +64,7 @@ class Ferver < Sinatra::Base
     
     if id < @file_list.size
 
-      file = "#{get_current_ferver_path}/#{@file_list[id]}" # todo: urgghh -> move this
+      file = get_path_for_file(get_current_ferver_path, @file_list[id])
 
       send_file(file, :disposition => 'attachment', :filename => File.basename(file))
 
@@ -90,7 +88,9 @@ class Ferver < Sinatra::Base
 
       next if file == '.' or file == '..'
 
-      @file_list.push(file) if File.file?(file)
+      file_path = get_path_for_file(current_directory, file)
+
+      @file_list.push(file) if File.file?(file_path)
 
     end
 
@@ -98,17 +98,28 @@ class Ferver < Sinatra::Base
 
   private
 
+  def get_path_for_file(directory, file_name)
+
+    File.join(directory, file_name)
+
+  end
+
+
   def get_current_ferver_path
+
+    path = nil
 
     if settings.respond_to?(:ferver_path) and settings.ferver_path
 
-      settings.ferver_path
+      path = settings.ferver_path
 
     else
 
-      DEFAULT_FILE_SERVER_DIR_PATH
+      path = DEFAULT_FILE_SERVER_DIR_PATH
 
     end
+
+    File.expand_path(path)
 
   end
 

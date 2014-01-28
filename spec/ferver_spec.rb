@@ -3,7 +3,6 @@ require 'spec_helper'
 describe 'ferver' do
     include Webrat::Matchers # allow cool html matching
 
-    DEFAULT_FERVER_DIR = '/tmp'
 
     context 'given a request to the server root' do
 
@@ -36,7 +35,11 @@ describe 'ferver' do
 
         it 'will use default directory when none specified' do
 
-            Dir.expects(:foreach).with(DEFAULT_FERVER_DIR).returns([])
+            # hmmm... we have to stub this call too. This knows too much about the implementation.
+            #   this doesnt smell like the best idea. TODO
+            File.stubs(:expand_path).returns('/a/path/to/ferver')
+
+            Dir.expects(:foreach).with('/a/path/to/ferver').returns([])
             get '/files.html'
 
         end
