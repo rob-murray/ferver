@@ -53,17 +53,13 @@ gem install sinatra
 For exmple, to serve files from **/Users/rob/Projects/ferver/** directory pass the path in as below;
 
 ```bash
-
 ruby run.rb /Users/rob/Projects/ferver/
-
 ```
 
 Or from the current directory;
 
 ```bash
-
 ruby run.rb ./
-
 ```
 
 
