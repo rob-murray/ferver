@@ -22,7 +22,7 @@ describe 'ferver' do
             follow_redirect!
 
             expect(last_response).to be_ok
-            expect(last_request.url).to eq('http://example.org/files.html') 
+            expect(last_request.url).to eq('http://example.org/files') 
             # this 'http://example.org/' appears to be what Rack test inserts? do I care - im only interested in the /files.html
 
         end
@@ -40,7 +40,7 @@ describe 'ferver' do
             File.stubs(:expand_path).returns('/a/path/to/ferver')
 
             Dir.expects(:foreach).with('/a/path/to/ferver').returns([])
-            get '/files.html'
+            get '/files'
 
         end
 
@@ -49,7 +49,7 @@ describe 'ferver' do
             Ferver.set :ferver_path, '/foo'
 
             Dir.expects(:foreach).with('/foo').returns([])
-            get '/files.html'
+            get '/files'
 
         end
 
@@ -65,7 +65,7 @@ describe 'ferver' do
 
         it 'will return empty list as html' do
 
-            get '/files.html'
+            get '/files'
             expect(last_response).to be_ok
             
             expect(last_response.body).to have_selector("li", :count => 0)
@@ -76,8 +76,10 @@ describe 'ferver' do
 
         it 'will return empty list as json' do
 
-            get '/files.json'
+            get '/files', {}, {"HTTP_ACCEPT" => "application/json" }
+
             expect(last_response).to be_ok
+            expect(last_response.content_type).to include('application/json')
 
             list = JSON.parse last_response.body
 
@@ -99,7 +101,7 @@ describe 'ferver' do
 
         it 'will return a list as html' do
 
-            get '/files.html'
+            get '/files'
             expect(last_response).to be_ok
 
             expect(last_response.body).to have_selector("li", :count => 2)
@@ -110,8 +112,10 @@ describe 'ferver' do
 
         it 'will return a list as json' do
 
-            get '/files.json'
+            get '/files', {}, {"HTTP_ACCEPT" => "application/json" }
+
             expect(last_response).to be_ok
+            expect(last_response.content_type).to include('application/json')
 
             list = JSON.parse last_response.body
             expect(list.count).to eq(2)
@@ -121,7 +125,7 @@ describe 'ferver' do
 
         it 'will return display filenames in html' do
 
-            get '/files.html'
+            get '/files'
 
             expect(last_response.body).to have_selector("li") do |node|
 
@@ -143,7 +147,7 @@ describe 'ferver' do
 
             it 'will return only files as html' do
 
-                get '/files.html'
+                get '/files'
                 expect(last_response).to be_ok
 
                 expect(last_response.body).to have_selector("li", :count => 1)
@@ -155,8 +159,10 @@ describe 'ferver' do
 
             it 'will return only files as json' do
 
-                get '/files.json'
+                get '/files', {}, {"HTTP_ACCEPT" => "application/json" }
+
                 expect(last_response).to be_ok
+                expect(last_response.content_type).to include('application/json')
 
                 list = JSON.parse last_response.body
                 expect(list.count).to eq(1)
@@ -177,7 +183,7 @@ describe 'ferver' do
 
             it 'will only list files as html' do
 
-                get '/files.html'
+                get '/files'
                 expect(last_response).to be_ok
 
                 expect(last_response.body).to have_selector("li", :count => 1)
@@ -188,8 +194,10 @@ describe 'ferver' do
 
             it 'will only list files as json' do
 
-                get '/files.json'
+                get '/files', {}, {"HTTP_ACCEPT" => "application/json" }
+
                 expect(last_response).to be_ok
+                expect(last_response.content_type).to include('application/json')
 
                 list = JSON.parse last_response.body
                 expect(list.count).to eq(1)

@@ -36,7 +36,7 @@ The only Ruby gems required are... wait... and... applause;
 
 How to use this utility:
 
-Using this could not be simpler, that is the idea... (soon to be even simpler!)
+Using this could not be simpler, that is the idea.
 
 1) Obtain an copy of the app file `src/ferver.rb` via `git clone`, `wget` or however you want.
 
@@ -63,7 +63,7 @@ ruby run.rb ./
 ```
 
 
-** Identify the port used (Hint: see line 4 below) and connect eg: http://localhost:4567/files.html
+** Identify the port used (Hint: see line 4 below) and connect eg: http://localhost:4567/files
 
 ```bash
 Puma 1.6.3 starting...
@@ -77,9 +77,17 @@ Puma 1.6.3 starting...
 
 Here is how to access the files and file list.
 
-* http://host:port/files.html - will display list of files as html
-* http://host:port/files.json - will return list of files in json
-* http://host:port/files/:id e.g. http://localhost:4567/files/2 - will initiate download of file id
+* http://localhost:4567/files - will display list of files as html
+* Passing the header `Accept: application/json` - will return the list of files as json
+
+```bash
+curl -i -H "Accept: application/json" http://localhost:4567/files
+```
+
+* http://localhost:4567/files/:id e.g. http://localhost:4567/files/2 - will initiate download of file id
+
+
+**!** Check out the `spec` for how it works really.
 
 
 

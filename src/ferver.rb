@@ -25,30 +25,28 @@ class Ferver < Sinatra::Base
   # /
   get '/' do
 
-    redirect to('/files.html')
+    redirect to('/files')
 
   end
 
 
-  # list files
-  # /files.html
-  get '/files.html' do
+  # list files; repond as html or json
+  # /files
+  get '/files' do
 
-    @file_count = @file_list.size
-    @ferver_path = get_current_ferver_path
+    if request.preferred_type.to_s == "application/json"
 
-    erb :file_list_view
-    
-  end
+      content_type :json
+      @file_list.to_json
 
+    else
 
-  # list files
-  # /files.json
-  get '/files.json' do
-    
-    content_type :json
-    
-    @file_list.to_json
+      @file_count = @file_list.size
+      @ferver_path = get_current_ferver_path
+
+      erb :file_list_view
+
+    end
     
   end
 
@@ -75,7 +73,7 @@ class Ferver < Sinatra::Base
 
 
   # Find all files in `Ferver` directory. 
-  # Called before each response.
+  # !Called before each response.
   #
   before do
     
