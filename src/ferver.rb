@@ -15,6 +15,8 @@ require "sinatra/base"
 class Ferver < Sinatra::Base
 
   # Config
+  set :inline_templates, true
+  set :app_file, __FILE__
 
   # By default, serve files from current location
   DEFAULT_FILE_SERVER_DIR_PATH = './'
@@ -31,16 +33,11 @@ class Ferver < Sinatra::Base
   # list files
   # /files.html
   get '/files.html' do
-    
-    content = "<html><body><h3>Files served:</h3><p><ul>"
 
-    @file_list.each_with_index do |file, index|
+    @file_count = @file_list.size
+    @ferver_path = get_current_ferver_path
 
-      content += "<li><a href=""/files/#{index}"">#{file}</a></li>"
-
-    end
-
-    content += "</ul></p><p>#{@file_list.size} files served from: #{get_current_ferver_path}</p></body></html>"
+    erb :file_list_view
     
   end
 
@@ -77,7 +74,9 @@ class Ferver < Sinatra::Base
   end
 
 
-  # before each block
+  # Find all files in `Ferver` directory. 
+  # Called before each response.
+  #
   before do
     
     @file_list = []
@@ -98,13 +97,19 @@ class Ferver < Sinatra::Base
 
   private
 
+  # Return an absolute path to a `file_name` in the `directory`
+  #
+  #
   def get_path_for_file(directory, file_name)
 
     File.join(directory, file_name)
 
   end
 
-
+  # Return the absolute path to the directory Ferver is serving files from.
+  # This can be specified in Sinatra configuration; 
+  #   i.e. `Ferver.set :ferver_path, ferver_path` or the default if nil
+  #
   def get_current_ferver_path
 
     path = nil
@@ -125,3 +130,37 @@ class Ferver < Sinatra::Base
 
 
 end
+
+__END__
+ 
+@@file_list_view
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Ferver File List</title>
+  </head>
+  <body>
+    <h3>Files served:</h3>
+    <ul>
+      <% @file_list.each_with_index do |file_name, index| %>
+
+        <li><a href="/files/<%= index %>"><%= file_name %></a></li>
+
+      <% end %>
+
+    </ul>
+
+    <p><%= @file_count %> files served from: <%= @ferver_path %></p>
+
+    <hr>
+
+    <p>Served by: <a href="https://github.com/rob-murray/ferver" title="Ferver: A simple Ruby app serving files over HTTP">Ferver</a></p>
+
+  </body>
+</html>
+
+<html>
+<body>
+
+

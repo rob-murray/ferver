@@ -68,7 +68,7 @@ describe 'ferver' do
             get '/files.html'
             expect(last_response).to be_ok
             
-            expect(last_response.body).not_to have_selector("a")
+            expect(last_response.body).to have_selector("li", :count => 0)
 
             expect(last_response.body).to contain(/0 files/)
 
