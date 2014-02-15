@@ -34,16 +34,18 @@ class Ferver < Sinatra::Base
   # /files
   get '/files' do
 
+    file_list = @ferver_list.get_file_list
+
     if request.preferred_type.to_s == "application/json"
 
       content_type :json
-      @ferver_list.get_file_list.to_json
+      file_list.to_json
 
     else
 
       @file_count = @ferver_list.file_count
       @ferver_path = File.expand_path(get_current_ferver_path)
-      @file_list = @ferver_list.get_file_list
+      @file_list = file_list
 
       erb :file_list_view
 
@@ -176,7 +178,7 @@ class FerverList
 
         file_path = FerverList.path_for_file(@file_path, file)
 
-        @file_list.push(file) if File.file?(file_path)
+        @file_list << file if File.file?(file_path)
 
       end
 
