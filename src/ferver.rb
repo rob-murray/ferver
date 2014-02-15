@@ -37,12 +37,13 @@ class Ferver < Sinatra::Base
     if request.preferred_type.to_s == "application/json"
 
       content_type :json
-      @file_list.to_json
+      @ferver_list.get_file_list.to_json
 
     else
 
-      @file_count = @file_list.size
-      @ferver_path = get_current_ferver_path
+      @file_count = @ferver_list.file_count
+      @ferver_path = File.expand_path(get_current_ferver_path)
+      @file_list = @ferver_list.get_file_list
 
       erb :file_list_view
 
@@ -57,9 +58,11 @@ class Ferver < Sinatra::Base
     
     id = params[:id].to_i
     
-    if id < @file_list.size
+    if @ferver_list.file_id_is_valid?(id)
 
-      file = get_path_for_file(get_current_ferver_path, @file_list[id])
+      file_name = @ferver_list.file_by_id(id)
+
+      file = FerverList.path_for_file(get_current_ferver_path, file_name)
 
       send_file(file, :disposition => 'attachment', :filename => File.basename(file))
 
@@ -73,61 +76,114 @@ class Ferver < Sinatra::Base
 
 
   # Find all files in `Ferver` directory. 
-  # !Called before each response.
+  # !Called before each request
   #
   before do
     
-    @file_list = []
-
-    current_directory = get_current_ferver_path
-    
-    Dir.foreach(current_directory) do |file|
-
-      next if file == '.' or file == '..'
-
-      file_path = get_path_for_file(current_directory, file)
-
-      @file_list.push(file) if File.file?(file_path)
-
-    end
+    @ferver_list = FerverList.new(get_current_ferver_path)
 
   end
 
   private
 
+    # Return the absolute path to the directory Ferver is serving files from.
+    # This can be specified in Sinatra configuration; 
+    #   i.e. `Ferver.set :ferver_path, ferver_path` or the default if nil
+    #
+    def get_current_ferver_path
+
+      path = nil
+
+      if settings.respond_to?(:ferver_path) and settings.ferver_path
+
+        path = settings.ferver_path
+
+      else
+
+        path = DEFAULT_FILE_SERVER_DIR_PATH
+
+      end
+
+    end
+
+end
+
+# A representation of Ferver's file list
+#
+class FerverList
+
+  # create a new instance with a path
+  #
+  def initialize(path)
+
+    @file_path = File.expand_path(path)
+
+    find_files
+    
+  end
+
   # Return an absolute path to a `file_name` in the `directory`
   #
-  #
-  def get_path_for_file(directory, file_name)
+  def self.path_for_file(directory, file_name)
 
     File.join(directory, file_name)
 
   end
 
-  # Return the absolute path to the directory Ferver is serving files from.
-  # This can be specified in Sinatra configuration; 
-  #   i.e. `Ferver.set :ferver_path, ferver_path` or the default if nil
+  # List of filenames
   #
-  def get_current_ferver_path
+  def get_file_list
 
-    path = nil
-
-    if settings.respond_to?(:ferver_path) and settings.ferver_path
-
-      path = settings.ferver_path
-
-    else
-
-      path = DEFAULT_FILE_SERVER_DIR_PATH
-
-    end
-
-    File.expand_path(path)
+    @file_list
 
   end
 
+  # Is the file id a valid id for Ferver to serve
+  #
+  def file_id_is_valid?(file_id)
+
+    file_id < @file_list.size
+
+  end
+
+  # Filename by its index
+  #
+  def file_by_id(id)
+
+    @file_list[id]
+
+  end
+
+  # Number of files in list 
+  #
+  def file_count
+
+    @file_list.size
+
+  end
+
+  private
+
+    # Iterate through files in specified dir for files
+    #
+    def find_files
+
+      @file_list = []
+
+      Dir.foreach(@file_path) do |file|
+
+        next if file == '.' or file == '..'
+
+        file_path = FerverList.path_for_file(@file_path, file)
+
+        @file_list.push(file) if File.file?(file_path)
+
+      end
+
+    end
 
 end
+
 
 __END__
  

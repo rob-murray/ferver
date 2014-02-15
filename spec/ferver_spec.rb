@@ -3,6 +3,8 @@ require 'spec_helper'
 describe 'ferver' do
     include Webrat::Matchers # allow cool html matching
 
+    EMPTY_FILE_LIST = []
+
 
     context 'given a request to the server root' do
 
@@ -39,7 +41,7 @@ describe 'ferver' do
             #   this doesnt smell like the best idea. TODO
             File.stubs(:expand_path).returns('/a/path/to/ferver')
 
-            Dir.expects(:foreach).with('/a/path/to/ferver').returns([])
+            Dir.expects(:foreach).with('/a/path/to/ferver').returns(EMPTY_FILE_LIST)
             get '/files'
 
         end
@@ -48,7 +50,7 @@ describe 'ferver' do
 
             Ferver.set :ferver_path, '/foo'
 
-            Dir.expects(:foreach).with('/foo').returns([])
+            Dir.expects(:foreach).with('/foo').returns(EMPTY_FILE_LIST)
             get '/files'
 
         end
@@ -59,7 +61,7 @@ describe 'ferver' do
     context 'given an empty list of files' do
 
         before(:each) do
-            Dir.stubs(:foreach).returns([])
+            Dir.stubs(:foreach).returns(EMPTY_FILE_LIST)
             File.stubs(:file?).returns(true)
         end
 
@@ -83,7 +85,7 @@ describe 'ferver' do
 
             list = JSON.parse last_response.body
 
-            expect(list).to eq([])
+            expect(list).to eq(EMPTY_FILE_LIST)
 
         end
 
