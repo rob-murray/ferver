@@ -34,7 +34,7 @@ class Ferver < Sinatra::Base
   # /files
   get '/files' do
 
-    file_list = @ferver_list.get_file_list
+    file_list = @ferver_list.file_list
 
     if request.preferred_type.to_s == "application/json"
 
@@ -114,6 +114,9 @@ end
 #
 class FerverList
 
+  # List of files
+  attr_reader :file_list
+
   # create a new instance with a path
   #
   def initialize(path)
@@ -129,14 +132,6 @@ class FerverList
   def self.path_for_file(directory, file_name)
 
     File.join(directory, file_name)
-
-  end
-
-  # List of filenames
-  #
-  def get_file_list
-
-    @file_list
 
   end
 
