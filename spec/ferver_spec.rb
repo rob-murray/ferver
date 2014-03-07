@@ -48,7 +48,7 @@ describe 'ferver' do
 
         it 'will use the directory passed via configuration when present' do
 
-            Ferver.set :ferver_path, '/foo'
+            Ferver::App.set :ferver_path, '/foo'
 
             Dir.expects(:foreach).with('/foo').returns(EMPTY_FILE_LIST)
             get '/files'

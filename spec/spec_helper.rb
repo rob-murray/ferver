@@ -8,7 +8,8 @@ ENV['RACK_ENV'] = 'test'
 Coveralls.wear! # this uses SimpleCov under its bonnet
 
 Spork.prefork do
-  require File.join(File.dirname(__FILE__), '..', '/src/', 'ferver')
+  #require File.join(File.dirname(__FILE__), '..', '/src/', 'ferver')
+  require 'ferver'
 
   require 'rubygems'
   require 'sinatra'
@@ -28,7 +29,7 @@ Spork.prefork do
   end
 
   def app
-    @app ||= Ferver
+    @app ||= Ferver::App
   end
 end
 
