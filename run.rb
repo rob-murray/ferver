@@ -1,14 +1,18 @@
-require File.join(File.dirname(__FILE__), 'src/', 'ferver')
+#require File.join(File.dirname(__FILE__), 'src/', 'ferver')
 
+require 'rubygems'
+require 'bundler'
+Bundler.setup
+require 'ferver'
 
 def main
 
     # use the first argument as the file path to serve from
     ferver_path = (ARGV.length == 1 && ARGV[0]) || nil
-    Ferver.set :ferver_path, ferver_path
+    Ferver::App.set :ferver_path, ferver_path
 
-    #  Run!
-    Ferver.run!
+    # run!
+    Ferver::App.run!
 
 end
 
