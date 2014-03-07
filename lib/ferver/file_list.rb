@@ -4,11 +4,13 @@ module Ferver
     class FileList
 
       # List of files
-      attr_reader :file_list
+      attr_reader :files
 
       # create a new instance with a path
       #
       def initialize(path)
+
+        raise ArgumentError, "No path is specified" if path.nil? or path.blank?
 
         @file_path = File.expand_path(path)
 
@@ -28,7 +30,7 @@ module Ferver
       #
       def file_id_is_valid?(file_id)
 
-        file_id < @file_list.size
+        file_id < @files.size
 
       end
 
@@ -36,7 +38,7 @@ module Ferver
       #
       def file_by_id(id)
 
-        @file_list[id]
+        @files.fetch(id)
 
       end
 
@@ -44,7 +46,7 @@ module Ferver
       #
       def file_count
 
-        @file_list.size
+        @files.size
 
       end
 
@@ -54,7 +56,7 @@ module Ferver
         #
         def find_files
 
-          @file_list = []
+          @files = []
 
           Dir.foreach(@file_path) do |file|
 
@@ -62,7 +64,7 @@ module Ferver
 
             file_path = FileList.path_for_file(@file_path, file)
 
-            @file_list << file if File.file?(file_path)
+            @files << file if File.file?(file_path)
 
           end
 

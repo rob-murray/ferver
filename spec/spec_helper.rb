@@ -8,7 +8,7 @@ ENV['RACK_ENV'] = 'test'
 Coveralls.wear! # this uses SimpleCov under its bonnet
 
 Spork.prefork do
-  #require File.join(File.dirname(__FILE__), '..', '/src/', 'ferver')
+  require File.join(File.dirname(__FILE__), '..', '/lib/', 'ferver', 'file_list')
   require 'ferver'
 
   require 'rubygems'
@@ -22,6 +22,8 @@ Spork.prefork do
   set :run, false
   set :raise_errors, true
   set :logging, false
+
+  EMPTY_FILE_LIST = []
 
   RSpec.configure do |conf|
     conf.include Rack::Test::Methods
