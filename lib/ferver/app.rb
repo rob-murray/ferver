@@ -27,7 +27,7 @@ module Ferver
     # /files
     get '/files' do
 
-      file_list = @ferver_list.file_list
+      file_list = @ferver_list.files
 
       if request.preferred_type.to_s == "application/json"
 
@@ -50,8 +50,10 @@ module Ferver
     # download file
     # /files/:id
     get '/files/:id' do
-      
-      id = params[:id].to_i
+
+      id = Integer(params[:id]) rescue nil
+
+      halt 400 if id.nil?
       
       if @ferver_list.file_id_is_valid?(id)
 
