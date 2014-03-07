@@ -10,7 +10,8 @@ module Ferver
     set :inline_templates, true
     set :app_file, __FILE__
 
-    # By default, serve files from current location
+    # By default, serve files from current location when the gem 
+    #   binary is called.
     DEFAULT_FILE_SERVER_DIR_PATH = './'
 
     # redirect to file list
@@ -56,7 +57,7 @@ module Ferver
 
         file_name = @ferver_list.file_by_id(id)
 
-        file = Ferver::FileList.path_for_file(get_current_ferver_path, file_name)
+        file = FileList.path_for_file(get_current_ferver_path, file_name)
 
         send_file(file, :disposition => 'attachment', :filename => File.basename(file))
 
@@ -74,7 +75,7 @@ module Ferver
     #
     before do
       
-      @ferver_list = Ferver::FileList.new(get_current_ferver_path)
+      @ferver_list = FileList.new(get_current_ferver_path)
 
     end
 
@@ -82,21 +83,19 @@ module Ferver
 
       # Return the absolute path to the directory Ferver is serving files from.
       # This can be specified in Sinatra configuration; 
-      #   i.e. `Ferver.set :ferver_path, ferver_path` or the default if nil
+      #   i.e. `Ferver::App.set :ferver_path, ferver_path` or the default if nil
       #
       def get_current_ferver_path
 
-        path = nil
+        @current_ferver_path ||= begin
+          path = nil
 
-        if settings.respond_to?(:ferver_path) and settings.ferver_path
-
-          path = settings.ferver_path
-
-        else
-
-          path = DEFAULT_FILE_SERVER_DIR_PATH
-
-        end
+          if settings.respond_to?(:ferver_path) and settings.ferver_path
+            path = settings.ferver_path
+          else
+            path = DEFAULT_FILE_SERVER_DIR_PATH
+          end
+        end        
 
       end
 
