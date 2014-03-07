@@ -3,239 +3,205 @@ require 'spec_helper'
 describe 'ferver' do
     include Webrat::Matchers # allow cool html matching
 
-    EMPTY_FILE_LIST = []
 
-
-    context 'given a request to the server root' do
+    context "given a request to the server root" do
 
         before(:each) do
             get '/'
         end
 
-
-        it 'should return redirect' do
-
+        it "should return redirect" do
             expect(last_response).to be_redirect
-
         end
 
-        it 'should redirect to file list' do
-
+        it "should redirect to file list" do
             follow_redirect!
 
             expect(last_response).to be_ok
-            expect(last_request.url).to eq('http://example.org/files') 
-            # this 'http://example.org/' appears to be what Rack test inserts? do I care - im only interested in the /files.html
-
+            expect(last_request.url).to match(/files/)
         end
 
     end
 
+    describe "choosing directory to serve files from" do
 
-    context 'test serving directory' do # todo: reword this
+        before {
+            @file_list = mock()
+            @file_list.stubs(:files).returns(EMPTY_FILE_LIST)
+            @file_list.stubs(:file_count).returns(0)
+        }
 
+        context "when no directory is specified" do
 
-        it 'will use default directory when none specified' do
+            it "will use default directory" do
 
-            # hmmm... we have to stub this call too. This knows too much about the implementation.
-            #   this doesnt smell like the best idea. TODO
-            File.stubs(:expand_path).returns('/a/path/to/ferver')
+                Ferver::FileList.expects(:new).with('./').returns(@file_list)
 
-            Dir.expects(:foreach).with('/a/path/to/ferver').returns(EMPTY_FILE_LIST)
-            get '/files'
+                get '/files'
+            end
 
         end
 
-        it 'will use the directory passed via configuration when present' do
+        context "when the directory passed via configuration" do
 
-            Ferver::App.set :ferver_path, '/foo'
+            before { Ferver::App.set :ferver_path, '/foo' }
 
-            Dir.expects(:foreach).with('/foo').returns(EMPTY_FILE_LIST)
-            get '/files'
+            it "will use directory specified" do
+                Ferver::FileList.expects(:new).with('/foo').returns(@file_list)
+
+                get '/files'
+            end
 
         end
 
     end
-
 
     context 'given an empty list of files' do
 
-        before(:each) do
-            Dir.stubs(:foreach).returns(EMPTY_FILE_LIST)
-            File.stubs(:file?).returns(true)
+        before {
+            file_list = mock()
+            file_list.stubs(:files).returns(EMPTY_FILE_LIST)
+            file_list.stubs(:file_count).returns(0)
+            Ferver::FileList.stubs(:new).returns(file_list)
+        }
+
+        context "when no content-type is requested" do
+
+            before { get '/files' }
+
+            it "should return valid response" do
+                expect(last_response).to be_ok
+                #todo test html
+            end
+
+            it "should contain no file list in response content" do
+                expect(last_response.body).to have_selector("li", :count => 0)
+                expect(last_response.body).to contain(/0 files/)
+            end
+
         end
 
-        it 'will return empty list as html' do
+        context "when json content-type is requested" do
 
-            get '/files'
-            expect(last_response).to be_ok
-            
-            expect(last_response.body).to have_selector("li", :count => 0)
+            before {
+                get '/files', {}, {"HTTP_ACCEPT" => "application/json" }
+            }
 
-            expect(last_response.body).to contain(/0 files/)
+            it "should return valid response" do
+                expect(last_response).to be_ok
+                expect(last_response.content_type).to include('application/json')
+            end
+
+            it "should contain no file list in response content" do
+                list = JSON.parse last_response.body
+                expect(list).to eq(EMPTY_FILE_LIST)
+            end
 
         end
 
-        it 'will return empty list as json' do
+    end
 
-            get '/files', {}, {"HTTP_ACCEPT" => "application/json" }
+    context 'given a list of files' do
 
-            expect(last_response).to be_ok
-            expect(last_response.content_type).to include('application/json')
+        before {
+            file_list = mock()
+            file_list.stubs(:files).returns(["file1", "file2"])
+            file_list.stubs(:file_count).returns(2)
+            Ferver::FileList.stubs(:new).returns(file_list)
+        }
 
-            list = JSON.parse last_response.body
+        context "when no content-type is requested" do
 
-            expect(list).to eq(EMPTY_FILE_LIST)
+            before { get '/files' }
+
+            it "should return valid response" do
+                expect(last_response).to be_ok
+                #todo test html
+            end
+
+            it "should contain no file list in response content" do
+                expect(last_response.body).to have_selector("li", :count => 2)
+                expect(last_response.body).to contain(/2 files/)
+            end
+
+            it "should list filenames" do
+                expect(last_response.body).to have_selector("li") do |node|
+
+                    expect(node.first).to have_selector("a", :content => "file1")
+                    expect(node.last).to have_selector("a", :content => "file2")
+
+                end
+            end
+
+        end
+
+        context "when json content-type is requested" do
+
+            before {
+                get '/files', {}, {"HTTP_ACCEPT" => "application/json" }
+            }
+
+            it "should return valid response" do
+                expect(last_response).to be_ok
+                expect(last_response.content_type).to include('application/json')
+            end
+
+            it "should contain no file list in response content" do
+                list = JSON.parse last_response.body
+                expect(list.count).to eq(2)
+                expect(list).to match_array(["file1", "file2"])
+            end
 
         end
 
     end
 
 
-    context 'given a list of files' do
+    describe "downloading a file" do
 
-        file_list = ["file1", "file2"]
+        before {
+            @file_list = mock()
+            @file_list.stubs(:files).returns(["file1", "file2"])
+            @file_list.stubs(:file_count).returns(2)
+            Ferver::FileList.stubs(:new).returns(@file_list)
+        }
 
-        before(:each) do
-            Dir.stubs(:foreach).multiple_yields("file1", "file2")
-            File.stubs(:file?).returns(true)
-        end
+        context "when requesting a file out of range" do
 
-        it 'will return a list as html' do
-
-            get '/files'
-            expect(last_response).to be_ok
-
-            expect(last_response.body).to have_selector("li", :count => 2)
-
-            expect(last_response.body).to contain(/2 files/)
-
-        end
-
-        it 'will return a list as json' do
-
-            get '/files', {}, {"HTTP_ACCEPT" => "application/json" }
-
-            expect(last_response).to be_ok
-            expect(last_response.content_type).to include('application/json')
-
-            list = JSON.parse last_response.body
-            expect(list.count).to eq(2)
-            expect(list).to match_array(file_list)
-
-        end
-
-        it 'will return display filenames in html' do
-
-            get '/files'
-
-            expect(last_response.body).to have_selector("li") do |node|
-
-                expect(node.first).to have_selector("a", :content => file_list.first)
-                expect(node.last).to have_selector("a", :content => file_list.last)
-
-            end
-
-        end
-
-        context 'given a list of files with current working dir and parent' do
-
-            valid_file_list = ["file1"]
-
-            before(:each) do
-                Dir.stubs(:foreach).multiple_yields(".", "..", "file1")
-                File.stubs(:file?).returns(true)
-            end
-
-            it 'will return only files as html' do
-
-                get '/files'
-                expect(last_response).to be_ok
-
-                expect(last_response.body).to have_selector("li", :count => 1)
-                expect(last_response.body).to have_selector("a", :content => valid_file_list.first)
-
-                expect(last_response.body).to contain(/1 files/)
-
-            end
-
-            it 'will return only files as json' do
-
-                get '/files', {}, {"HTTP_ACCEPT" => "application/json" }
-
-                expect(last_response).to be_ok
-                expect(last_response.content_type).to include('application/json')
-
-                list = JSON.parse last_response.body
-                expect(list.count).to eq(1)
-                expect(list).to match_array(valid_file_list)
-
-            end
-
-        end
-
-        context 'given a list of files and directory' do
-
-            valid_file_list = ["file1"]
-
-            before(:each) do
-                Dir.stubs(:foreach).multiple_yields("file1", "a_directory")
-                File.stubs(:file?).returns(true, false)
-            end
-
-            it 'will only list files as html' do
-
-                get '/files'
-                expect(last_response).to be_ok
-
-                expect(last_response.body).to have_selector("li", :count => 1)
-                expect(last_response.body).to have_selector("a", :content => valid_file_list.first)
-                expect(last_response.body).to contain(/1 files/)
-
-            end
-
-            it 'will only list files as json' do
-
-                get '/files', {}, {"HTTP_ACCEPT" => "application/json" }
-
-                expect(last_response).to be_ok
-                expect(last_response.content_type).to include('application/json')
-
-                list = JSON.parse last_response.body
-                expect(list.count).to eq(1)
-                expect(list).to match_array(valid_file_list)
-
-            end
-
-        end
-
-        context 'downloading a file' do
-
-            it 'will return not_found for file id out of range' do # urrrghhh; improve this
-
+            before {
+                @file_list.expects(:file_id_is_valid?).with(3).returns(false)
                 get '/files/3'
+            }
 
+            it "should return not_found" do
                 expect(last_response).to be_not_found
-
             end
 
-            it 'will return not_found for invalid file request' do 
+        end
 
+        context "when requesting invalid file id" do
+
+            before {
+                @file_list.expects(:file_id_is_valid?).never
                 get '/files/foo'
+            }
 
-                expect(last_response).to be_not_found
-
+            it "should return not_found" do
+                expect(last_response).to be_bad_request
             end
 
-            xit 'will return the file as requested' do
+        end
 
-                # havent worked out how to test this yet.
+        context "when requesting a valid file id" do
 
-                get '/files/0'
+            before { get '/files/0' }
 
+            xit "should return ok response" do
                 expect(last_response).to be_ok
-                expect(last_response.headers['Content-Type']).to eq("application/octet-stream")
+            end
 
+            xit "should return octet-stream content-type" do
+                expect(last_response.headers['Content-Type']).to eq("application/octet-stream")
             end
 
         end
