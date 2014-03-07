@@ -10,7 +10,7 @@ module Ferver
       #
       def initialize(path)
 
-        raise ArgumentError, "No path is specified" if path.nil? or path.blank?
+        raise ArgumentError, "No path is specified" if path.empty?
 
         @file_path = File.expand_path(path)
 
