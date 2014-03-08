@@ -51,7 +51,7 @@ module Ferver
     # /files/:id
     get '/files/:id' do
 
-      id = Integer(params[:id]) rescue halt(400)
+      id = Integer(params[:id]) rescue halt(400, "Bad request")
       
       if @ferver_list.file_id_is_valid?(id)
 
