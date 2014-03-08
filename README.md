@@ -2,11 +2,15 @@
 
 #### Ferver: A simple web app to server files over HTTP packaged as a Ruby gem.
 
-[![Build Status](https://travis-ci.org/rob-murray/ferver.png?branch=master)](https://travis-ci.org/rob-murray/ferver) [![Code Climate](https://codeclimate.com/github/rob-murray/ferver.png)](https://codeclimate.com/github/rob-murray/ferver) [![Coverage Status](https://coveralls.io/repos/rob-murray/ferver/badge.png)](https://coveralls.io/r/rob-murray/ferver) [![Dependency Status](https://gemnasium.com/rob-murray/ferver.png)](https://gemnasium.com/rob-murray/ferver)
+[![Build Status](https://travis-ci.org/rob-murray/ferver.png?branch=master)](https://travis-ci.org/rob-murray/ferver) 
+[![Code Climate](https://codeclimate.com/github/rob-murray/ferver.png)](https://codeclimate.com/github/rob-murray/ferver) 
+[![Coverage Status](https://coveralls.io/repos/rob-murray/ferver/badge.png)](https://coveralls.io/r/rob-murray/ferver) 
+[![Dependency Status](https://gemnasium.com/rob-murray/ferver.png)](https://gemnasium.com/rob-murray/ferver) 
+[![Gem Version](https://badge.fury.io/rb/ferver.png)](http://badge.fury.io/rb/ferver)
 
 ### Description
 
-This is super, simple ruby gem to serve files over **http**, useful as a basic file server to quickly share files on your local network or something. Just install the gem and go!
+This is super, simple ruby gem to serve files over **http**, useful as a basic file server to quickly share files on your local network or something over the web. Just install the gem and go!
 
 Here's the spec for **ferver**:
 
@@ -19,9 +23,7 @@ Here's the spec for **ferver**:
 
 ### Getting started
 
-Using **ferver** could not be simpler; 
-
-Install the **ferver** gem
+Using **ferver** could not be simpler - just install the **ferver** gem.
 
 ```bash
 $ gem install ferver
@@ -42,7 +44,6 @@ $ ferver
 For exmple, to serve files from **/Users/rob/Projects/ferver/** directory pass the path in as below;
 
 ```bash
-# Serve files from a specific directory
 $ ferver /Users/rob/Projects/ferver/
 ````
 
@@ -52,11 +53,13 @@ The **ferver** gem uses [Sinatra](http://www.sinatrarb.com/) and runs on default
 
 #### HTML
 
-`http://localhost:4567/files` - List available files
+List available files in your browser.
+
+`http://localhost:4567/files`
 
 #### JSON
 
-Passing the header `Accept: application/json` will return the list of files as json.
+Requesting content-type `json`, for exampled passing the header `Accept: application/json` will return the list of files as json.
 
 ```bash
 curl -i -H "Accept: application/json" http://localhost:4567/files
@@ -71,6 +74,16 @@ For example to download file appearing third in the list displayed earlier, requ
 ### Contributions
 
 Please use the GitHub pull-request mechanism to submit contributions.
+
+After cloning the repo, you can test the application without having to install the gem package by running the `run.rb` file;
+
+```bash
+$ ruby run.rb
+
+# or
+
+$ ruby run.rb /path/to/dir
+```
 
 ### License
 
