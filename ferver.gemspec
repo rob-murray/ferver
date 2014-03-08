@@ -8,19 +8,10 @@ Gem::Specification.new do |spec|
   spec.version       = Ferver::VERSION
   spec.authors       = ["Rob Murray"]
   spec.email         = ["robmurray17@gmail.com"]
-  spec.summary       = %q{A simple Ruby app serving files over HTTP.}
-  spec.description   = %q{Ferver is a super, simple ruby app to serve files over http, useful as a basic file server to quickly share files on your local network or something.}
+  spec.summary       = %q{A simple web app to serve files over HTTP.}
+  spec.description   = %q{Ferver is a super, simple ruby gem to serve files over http; useful as a basic file server to quickly share files on your local network.}
   spec.homepage      = "https://github.com/rob-murray/ferver"
   spec.license       = "MIT"
-  spec.post_install_message =<<eos
-********************************************************************************
-
-  Thanks for installing Ferver.
-  To serve files from the current directory, just run `ferver`.
-  Or pass in the path to the directory to serve from `ferver /path/to/files`.
-
-********************************************************************************
-eos
   
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
