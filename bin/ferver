@@ -7,4 +7,5 @@ require 'ferver'
 ferver_path = (ARGV.length == 1 && ARGV[0]) || nil
 Ferver::App.set :ferver_path, ferver_path
 
+# run!
 Ferver::App.run!
