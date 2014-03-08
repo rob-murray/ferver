@@ -1,6 +1,6 @@
 ## Ferver = File-Server
 
-#### Ferver: A simple web app to server files over HTTP packaged as a Ruby gem.
+#### Ferver: A simple web app to serve files over HTTP packaged as a Ruby gem.
 
 [![Build Status](https://travis-ci.org/rob-murray/ferver.png?branch=master)](https://travis-ci.org/rob-murray/ferver) 
 [![Code Climate](https://codeclimate.com/github/rob-murray/ferver.png)](https://codeclimate.com/github/rob-murray/ferver) 
