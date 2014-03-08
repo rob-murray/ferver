@@ -1,5 +1,3 @@
-#require File.join(File.dirname(__FILE__), 'src/', 'ferver')
-
 require 'rubygems'
 require 'bundler'
 Bundler.setup
