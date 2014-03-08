@@ -111,7 +111,7 @@ __END__
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Ferver File List</title>
+    <title>File List &middot; Ferver</title>
   </head>
   <body>
     <h3>Files served:</h3>
@@ -128,7 +128,7 @@ __END__
 
     <hr>
 
-    <p>Served by: <a href="https://github.com/rob-murray/ferver" title="Ferver: A simple Ruby app serving files over HTTP">Ferver</a></p>
+    <p>Served by <a href="https://github.com/rob-murray/ferver" title="Ferver: A simple Ruby app serving files over HTTP">Ferver</a> gem v<%= Ferver::VERSION %></p>
 
   </body>
 </html>
