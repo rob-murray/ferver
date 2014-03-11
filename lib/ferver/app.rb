@@ -17,56 +17,41 @@ module Ferver
     # redirect to file list
     # /
     get '/' do
-
       redirect to('/files')
-
     end
-
 
     # list files; repond as html or json
     # /files
     get '/files' do
-
       file_list = @ferver_list.files
 
       if request.preferred_type.to_s == "application/json"
-
         content_type :json
+
         file_list.to_json
-
       else
-
         @file_count = @ferver_list.file_count
         @ferver_path = File.expand_path(get_current_ferver_path)
         @file_list = file_list
 
         erb :file_list_view
-
       end
       
     end
 
-
     # download file
     # /files/:id
     get '/files/:id' do
-
       id = Integer(params[:id]) rescue halt(400, "Bad request")
       
       if @ferver_list.file_id_is_valid?(id)
-
         file_name = @ferver_list.file_by_id(id)
-
         file = FileList.path_for_file(get_current_ferver_path, file_name)
 
         send_file(file, :disposition => 'attachment', :filename => File.basename(file))
-
       else
-
         status 404
-
       end
-      
     end
 
 
@@ -74,9 +59,7 @@ module Ferver
     # !Called before each request
     #
     before do
-      
       @ferver_list = FileList.new(get_current_ferver_path)
-
     end
 
     private
@@ -86,7 +69,6 @@ module Ferver
       #   i.e. `Ferver::App.set :ferver_path, ferver_path` or the default if nil
       #
       def get_current_ferver_path
-
         @current_ferver_path ||= begin
           path = nil
 
@@ -95,8 +77,7 @@ module Ferver
           else
             path = DEFAULT_FILE_SERVER_DIR_PATH
           end
-        end        
-
+        end
       end
 
   end
