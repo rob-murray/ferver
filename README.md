@@ -75,14 +75,14 @@ For example to download file appearing third in the list displayed earlier, requ
 
 Please use the GitHub pull-request mechanism to submit contributions.
 
-After cloning the repo, you can test the application without having to install the gem package by running the `run.rb` file;
+After cloning the repo, you can test the application without having to install the gem package by running the `server` Rake task;
 
 ```bash
-$ ruby run.rb
+$ rake server
 
 # or
 
-$ ruby run.rb /path/to/dir
+$ rake server /path/to/dir
 ```
 
 ### License
