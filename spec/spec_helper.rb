@@ -9,6 +9,7 @@ Coveralls.wear! # this uses SimpleCov under its bonnet
 
 Spork.prefork do
   require File.join(File.dirname(__FILE__), '..', '/lib/', 'ferver', 'file_list')
+  require File.join(File.dirname(__FILE__), '..', '/lib/', 'ferver', 'file_id_request')
   require 'ferver'
 
   require 'rubygems'

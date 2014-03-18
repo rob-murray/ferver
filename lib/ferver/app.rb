@@ -2,6 +2,7 @@ require "sinatra"
 require "json"
 require "sinatra/base"
 require "ferver/file_list"
+require "ferver/file_id_request"
 
 module Ferver
   class App < Sinatra::Base
@@ -42,10 +43,12 @@ module Ferver
     # download file
     # /files/:id
     get '/files/:id' do
-      id = Integer(params[:id]) rescue halt(400, "Bad request")
+      id_request = Ferver::FileIdRequest.new(params[:id])
       
-      if @ferver_list.file_id_is_valid?(id)
-        file_name = @ferver_list.file_by_id(id)
+      halt(400, "Bad request") unless id_request.valid?
+      
+      if @ferver_list.file_id_is_valid?(id_request.value)
+        file_name = @ferver_list.file_by_id(id_request.value)
         file = FileList.path_for_file(get_current_ferver_path, file_name)
 
         send_file(file, :disposition => 'attachment', :filename => File.basename(file))
