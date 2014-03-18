@@ -19,7 +19,7 @@ Spork.prefork do
   require 'webrat'
   
   # test environment stuff
-  set :environment, :testf
+  set :environment, :test
   set :run, false
   set :raise_errors, true
   set :logging, false

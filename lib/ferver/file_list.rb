@@ -10,6 +10,7 @@ module Ferver
       #
       def initialize(path)
         raise ArgumentError, "No path is specified" if path.empty?
+        raise DirectoryNotFoundError unless Dir.exists?(path)
 
         @file_path = File.expand_path(path)
         find_files

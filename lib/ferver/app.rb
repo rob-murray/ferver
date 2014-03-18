@@ -13,17 +13,17 @@ module Ferver
 
     # By default, serve files from current location when the gem 
     #   binary is called.
-    DEFAULT_FILE_SERVER_DIR_PATH = './'
+    DEFAULT_FILE_SERVER_DIR_PATH = "./"
 
     # redirect to file list
     # /
-    get '/' do
-      redirect to('/files')
+    get "/" do
+      redirect to("/files")
     end
 
     # list files; repond as html or json
     # /files
-    get '/files' do
+    get "/files" do
       file_list = @ferver_list.files
 
       if request.preferred_type.to_s == "application/json"
@@ -42,9 +42,9 @@ module Ferver
 
     # download file
     # /files/:id
-    get '/files/:id' do
+    get "/files/:id" do
       id_request = Ferver::FileIdRequest.new(params[:id])
-      
+
       halt(400, "Bad request") unless id_request.valid?
       
       if @ferver_list.file_id_is_valid?(id_request.value)
@@ -62,7 +62,12 @@ module Ferver
     # !Called before each request
     #
     before do
-      @ferver_list = FileList.new(get_current_ferver_path)
+      begin
+        @ferver_list = FileList.new(get_current_ferver_path)
+      rescue DirectoryNotFoundError
+        halt(500, "Ferver: Directory '#{get_current_ferver_path}' not found.")
+      end
+      
     end
 
     private

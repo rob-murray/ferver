@@ -2,6 +2,8 @@ require 'spec_helper'
 
 describe Ferver::FileList do
 
+    before { Dir.stubs(:exists?).returns(true) }
+
     describe "creating instance" do
 
         context "when empty path argument is passed" do
@@ -12,9 +14,9 @@ describe Ferver::FileList do
 
         end
 
-        context "when path argument is passed" do
+        context "when valid path argument is passed" do
 
-            let(:path) { '/foo' }
+            let(:path) { "/foo" }
 
             it "should find files in path argument" do
                 Dir.expects(:foreach).with(path).returns(EMPTY_FILE_LIST)
@@ -23,11 +25,29 @@ describe Ferver::FileList do
             
         end
 
+        context "when path argument passed does not exist" do
+
+            let(:path) { "/foo" }
+
+            it "should test if directory exists" do
+                Dir.expects(:exists?).with(path).returns(true)
+                Dir.stubs(:foreach).returns(EMPTY_FILE_LIST)
+
+                Ferver::FileList.new(path)
+            end
+
+            it "should raise exception" do
+                Dir.stubs(:exists?).returns(false)
+                expect { Ferver::FileList.new(path) }.to raise_error(Ferver::DirectoryNotFoundError)
+            end
+
+        end
+
     end
 
     context "when path directory is empty" do
 
-        let(:file_list) { Ferver::FileList.new('/foo') }
+        let(:file_list) { Ferver::FileList.new("/foo") }
 
         before { Dir.stubs(:foreach).returns(EMPTY_FILE_LIST) }
 
@@ -43,7 +63,7 @@ describe Ferver::FileList do
 
     context "when path directory contains current working dir and parent" do
 
-        let(:file_list) { Ferver::FileList.new('/foo') }
+        let(:file_list) { Ferver::FileList.new("/foo") }
 
         before(:each) do
             Dir.stubs(:foreach).multiple_yields(".", "..", "file1")
@@ -62,7 +82,7 @@ describe Ferver::FileList do
 
     context "when path directory contains file and directory" do
 
-        let(:file_list) { Ferver::FileList.new('/foo') }
+        let(:file_list) { Ferver::FileList.new("/foo") }
 
         before(:each) do
             Dir.stubs(:foreach).multiple_yields("file1", "a_directory")
@@ -81,7 +101,7 @@ describe Ferver::FileList do
 
     context "when path directory contains valid files" do
 
-        let(:file_list) { Ferver::FileList.new('/foo') }
+        let(:file_list) { Ferver::FileList.new("/foo") }
 
         before {
             Dir.stubs(:foreach).multiple_yields("file1", "file2")
@@ -100,7 +120,7 @@ describe Ferver::FileList do
 
     describe "requesting files" do
 
-        let(:file_list) { Ferver::FileList.new('/foo') }
+        let(:file_list) { Ferver::FileList.new("/foo") }
 
         before {
             Dir.stubs(:foreach).multiple_yields("file1", "file2")
