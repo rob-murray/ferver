@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>File List &middot; Ferver</title>
+  </head>
+  <body>
+    <h3>Files served:</h3>
+    <ul>
+      <% @file_list.each_with_index do |file_name, index| %>
+
+        <li><a href="/files/<%= index %>"><%= file_name %></a></li>
+
+      <% end %>
+
+    </ul>
+
+    <p><%= @file_count %> files served from: <%= @ferver_path %></p>
+
+    <hr>
+
+    <p>Served by <a href="https://github.com/rob-murray/ferver" title="Ferver: A simple Ruby app serving files over HTTP">Ferver</a> gem v<%= Ferver::VERSION %></p>
+
+  </body>
+</html>
+
+<html>
+<body>
