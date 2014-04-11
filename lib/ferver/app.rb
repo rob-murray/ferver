@@ -1,8 +1,6 @@
 require "sinatra"
 require "json"
 require "sinatra/base"
-require "ferver/file_list"
-require "ferver/file_id_request"
 
 module Ferver
   class App < Sinatra::Base
