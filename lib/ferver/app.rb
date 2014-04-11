@@ -74,7 +74,7 @@ module Ferver
           if settings.respond_to?(:ferver_path) && settings.ferver_path
             path = settings.ferver_path
           else
-            path = DEFAULT_FILE_SERVER_DIR_PATH
+            path = Ferver::DEFAULT_FILE_SERVER_DIR_PATH
           end
         end
       end

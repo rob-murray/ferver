@@ -4,7 +4,11 @@ require_relative "ferver/file_list"
 require_relative "ferver/version"
 
 module Ferver
-  autoload :App, 'ferver/app'
+    autoload :App, 'ferver/app'
 
-  class DirectoryNotFoundError < StandardError; end
+    # By default, serve files from current location when the gem 
+    #   binary is called.
+    DEFAULT_FILE_SERVER_DIR_PATH = "./"
+
+    class DirectoryNotFoundError < StandardError; end
 end
