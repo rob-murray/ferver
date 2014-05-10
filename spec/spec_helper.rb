@@ -1,10 +1,12 @@
 require 'rubygems'
 require 'spork'
 require 'coveralls'
+require 'codeclimate-test-reporter'
 
 # force the environment to 'test'
 ENV['RACK_ENV'] = 'test'
 
+CodeClimate::TestReporter.start
 Coveralls.wear! # this uses SimpleCov under its bonnet
 
 Spork.prefork do
