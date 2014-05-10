@@ -3,7 +3,7 @@ require 'spork'
 require 'coveralls'
 
 # force the environment to 'test'
-ENV['RACK_ENV'] = 'test' 
+ENV['RACK_ENV'] = 'test'
 
 Coveralls.wear! # this uses SimpleCov under its bonnet
 
@@ -16,7 +16,7 @@ Spork.prefork do
   require 'rspec'
   require 'rack/test'
   require 'webrat'
-  
+
   # test environment stuff
   set :environment, :test
   set :run, false

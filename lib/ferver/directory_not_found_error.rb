@@ -1,4 +1,4 @@
 
 module Ferver
-    class DirectoryNotFoundError < StandardError; end
+  class DirectoryNotFoundError < StandardError; end
 end
