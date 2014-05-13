@@ -1,15 +1,14 @@
-require "sinatra"
-require "json"
-require "sinatra/base"
-require_relative "./directory_not_found_error"
+require 'sinatra'
+require 'json'
+require 'sinatra/base'
+require_relative './directory_not_found_error'
 
 module Ferver
   class App < Sinatra::Base
-
     set :app_file, __FILE__
 
     before do
-      @ferver_list = FileList.new(get_current_ferver_path)
+      @ferver_list = FileList.new(current_ferver_path)
     end
 
     error Ferver::DirectoryNotFoundError do
@@ -17,34 +16,32 @@ module Ferver
     end
 
     # redirect to file list
-    get "/" do
-      redirect to("/files")
+    get '/' do
+      redirect to('/files')
     end
 
     # list files
-    get "/files" do
-      if request.preferred_type.to_s == "application/json"
+    get '/files' do
+      if request.preferred_type.to_s == 'application/json'
         content_type :json
 
         @ferver_list.files.to_json
       else
-        @file_count = @ferver_list.file_count
-        @ferver_path = File.expand_path(get_current_ferver_path)
-        @file_list = @ferver_list.files
-
-        erb :index
+        erb :index, locals: { file_list: @ferver_list.files,
+                              ferver_path: File.expand_path(current_ferver_path),
+                              file_count: @ferver_list.file_count }
       end
     end
 
     # download file
-    get "/files/:id" do
-      halt(400, "Bad request") unless valid_file_request?
-      
+    get '/files/:id' do
+      halt(400, 'Bad request') unless valid_file_request?
+
       if @ferver_list.file_id_is_valid?(@file_id_request.value)
         file_name = @ferver_list.file_by_id(@file_id_request.value)
-        file = FileList.path_for_file(get_current_ferver_path, file_name)
+        file = FileList.path_for_file(current_ferver_path, file_name)
 
-        send_file(file, :disposition => 'attachment', :filename => File.basename(file))
+        send_file(file, disposition: 'attachment', filename: File.basename(file))
       else
         status 404
       end
@@ -64,17 +61,14 @@ module Ferver
     # This can be specified in Sinatra configuration:
     #   e.g. `Ferver::App.set :ferver_path, ferver_path` or the default if nil
     #
-    def get_current_ferver_path
-      @current_ferver_path ||= begin
-        path = nil
-
+    def current_ferver_path
+      @current_ferver_path_ ||= begin
         if settings.respond_to?(:ferver_path) && settings.ferver_path
-          path = settings.ferver_path
+          settings.ferver_path
         else
-          path = Ferver::DEFAULT_FILE_SERVER_DIR_PATH
+          Ferver::DEFAULT_FILE_SERVER_DIR_PATH
         end
       end
     end
-
   end
 end

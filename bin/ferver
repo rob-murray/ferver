@@ -3,7 +3,6 @@
 require 'sinatra'
 require 'ferver'
 
-
 # use the first argument as the file path to serve from
 ferver_path = (ARGV.length == 1 && ARGV[0]) || nil
 Ferver::App.set :ferver_path, ferver_path
