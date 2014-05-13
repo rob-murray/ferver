@@ -2,10 +2,10 @@
 
 #### Ferver: A simple web app to serve files over HTTP packaged as a Ruby gem.
 
-[![Build Status](https://travis-ci.org/rob-murray/ferver.png?branch=master)](https://travis-ci.org/rob-murray/ferver) 
-[![Code Climate](https://codeclimate.com/github/rob-murray/ferver.png)](https://codeclimate.com/github/rob-murray/ferver) 
-[![Coverage Status](https://coveralls.io/repos/rob-murray/ferver/badge.png)](https://coveralls.io/r/rob-murray/ferver) 
-[![Dependency Status](https://gemnasium.com/rob-murray/ferver.png)](https://gemnasium.com/rob-murray/ferver) 
+[![Build Status](https://travis-ci.org/rob-murray/ferver.png?branch=master)](https://travis-ci.org/rob-murray/ferver)
+[![Code Climate](https://codeclimate.com/github/rob-murray/ferver.png)](https://codeclimate.com/github/rob-murray/ferver)
+[![Coverage Status](https://coveralls.io/repos/rob-murray/ferver/badge.png)](https://coveralls.io/r/rob-murray/ferver)
+[![Dependency Status](https://gemnasium.com/rob-murray/ferver.png)](https://gemnasium.com/rob-murray/ferver)
 [![Gem Version](https://badge.fury.io/rb/ferver.png)](http://badge.fury.io/rb/ferver)
 
 ### Description
@@ -75,14 +75,14 @@ For example to download file appearing third in the list displayed earlier, requ
 
 Please use the GitHub pull-request mechanism to submit contributions.
 
-After cloning the repo, you can test the application without having to install the gem package by running the `server` Rake task;
+After cloning the repo, you can test the application without having to install the gem package by running the `server`, or it's alias `s` Rake task;
 
 ```bash
-$ rake server
+$ rake s
 
 # or
 
-$ rake server /path/to/dir
+$ rake s /path/to/dir
 ```
 
 ### License

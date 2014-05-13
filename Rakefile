@@ -1,9 +1,10 @@
 require "bundler/gem_tasks"
 require 'rspec/core'
 require 'rspec/core/rake_task'
- 
+
 task :default => :spec
- 
+task :s => :server
+
 desc "Run all specs in spec directory (excluding plugin specs)"
 RSpec::Core::RakeTask.new(:spec)
 
@@ -22,5 +23,4 @@ task :server do |t, args|
 
     # run!
     Ferver::App.run!
-
 end
