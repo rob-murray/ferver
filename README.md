@@ -2,11 +2,11 @@
 
 #### Ferver: A simple web app to serve files over HTTP packaged as a Ruby gem.
 
-[![Build Status](https://travis-ci.org/rob-murray/ferver.png?branch=master)](https://travis-ci.org/rob-murray/ferver)
+[![Build Status](https://travis-ci.org/rob-murray/ferver.svg?branch=master)](https://travis-ci.org/rob-murray/ferver)
 [![Code Climate](https://codeclimate.com/github/rob-murray/ferver.png)](https://codeclimate.com/github/rob-murray/ferver)
 [![Coverage Status](https://coveralls.io/repos/rob-murray/ferver/badge.png)](https://coveralls.io/r/rob-murray/ferver)
-[![Dependency Status](https://gemnasium.com/rob-murray/ferver.png)](https://gemnasium.com/rob-murray/ferver)
-[![Gem Version](https://badge.fury.io/rb/ferver.png)](http://badge.fury.io/rb/ferver)
+[![Dependency Status](https://gemnasium.com/rob-murray/ferver.svg)](https://gemnasium.com/rob-murray/ferver)
+[![Gem Version](https://badge.fury.io/rb/ferver.svg)](http://badge.fury.io/rb/ferver)
 
 ### Description
 
