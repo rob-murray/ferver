@@ -21,13 +21,13 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency 'bundler', '~> 1.5'
   spec.add_development_dependency 'rake', '~> 0'
-  spec.add_development_dependency 'rspec', '~> 2.14.1'
-  spec.add_development_dependency 'rack-test', '~> 0.6.2'
-  spec.add_development_dependency 'mocha', '~> 1.0.0'
-  spec.add_development_dependency 'spork', '~> 0.9.2'
-  spec.add_development_dependency 'webrat', '~> 0.7.3'
-  spec.add_development_dependency 'coveralls', '~> 0.7.0'
+  spec.add_development_dependency 'rspec', '~> 3.0'
+  spec.add_development_dependency 'rack-test', '~> 0.6'
+  spec.add_development_dependency 'mocha', '~> 1.0'
+  spec.add_development_dependency 'spork', '~> 0.9'
+  spec.add_development_dependency 'capybara', '~> 2.3'
+  spec.add_development_dependency 'coveralls', '~> 0.7'
   spec.add_development_dependency 'codeclimate-test-reporter'
 
-  spec.add_dependency 'sinatra', '~> 1.4.5'
+  spec.add_dependency 'sinatra', '~> 1.4'
 end
