@@ -1,10 +1,7 @@
 require 'spec_helper'
 
 describe 'ferver' do
-  include Webrat::Matchers # allow cool html matching
-
   context 'given a request to the server root' do
-
     before(:each) do
       get '/'
     end
@@ -19,11 +16,9 @@ describe 'ferver' do
       expect(last_response).to be_ok
       expect(last_request.url).to match(/files/)
     end
-
   end
 
   describe 'choosing directory to serve files from' do
-
     before do
       @file_list = mock
       @file_list.stubs(:files).returns(EMPTY_FILE_LIST)
@@ -31,18 +26,15 @@ describe 'ferver' do
     end
 
     context 'when no directory is specified' do
-
       it 'will use default directory' do
 
         Ferver::FileList.expects(:new).with('./').returns(@file_list)
 
         get '/files'
       end
-
     end
 
     context 'when the directory passed via configuration' do
-
       before { Ferver::App.set :ferver_path, '/foo' }
 
       it 'will use directory specified' do
@@ -50,11 +42,9 @@ describe 'ferver' do
 
         get '/files'
       end
-
     end
 
     context 'when directory does not exist' do
-
       before(:each) { Ferver::App.set :ferver_path, '/foo' }
 
       it 'will attempt to create FileList with path' do
@@ -68,15 +58,12 @@ describe 'ferver' do
 
         get '/files'
 
-        last_response.status.should eql 500
+        expect(last_response.status).to eql 500
       end
-
     end
-
   end
 
   context 'given an empty list of files' do
-
     before do
       file_list = mock
       file_list.stubs(:files).returns(EMPTY_FILE_LIST)
@@ -85,7 +72,6 @@ describe 'ferver' do
     end
 
     context 'when no content-type is requested' do
-
       before { get '/files' }
 
       it 'should return valid response' do
@@ -93,14 +79,12 @@ describe 'ferver' do
       end
 
       it 'should contain no file list in response content' do
-        expect(last_response.body).to have_selector('li', count: 0)
-        expect(last_response.body).to contain(/0 files/)
+        expect(last_response.body).not_to have_tag('li')
+        expect(last_response.body).to have_tag('p', text: /0 files/)
       end
-
     end
 
     context 'when json content-type is requested' do
-
       before do
         get '/files', {}, 'HTTP_ACCEPT' => 'application/json'
       end
@@ -114,13 +98,10 @@ describe 'ferver' do
         list = JSON.parse last_response.body
         expect(list).to eq(EMPTY_FILE_LIST)
       end
-
     end
-
   end
 
   context 'given a list of files' do
-
     before do
       file_list = mock
       file_list.stubs(:files).returns(%w(file1 file2))
@@ -129,7 +110,6 @@ describe 'ferver' do
     end
 
     context 'when no content-type is requested' do
-
       before { get '/files' }
 
       it 'should return valid response' do
@@ -137,23 +117,19 @@ describe 'ferver' do
       end
 
       it 'should contain no file list in response content' do
-        expect(last_response.body).to have_selector('li', count: 2)
-        expect(last_response.body).to contain(/2 files/)
+        expect(last_response.body).to have_tag('li', count: 2)
+        expect(last_response.body).to have_tag('p', text: /2 files/)
       end
 
       it 'should list filenames' do
-        expect(last_response.body).to have_selector('li') do |node|
-
-          expect(node.first).to have_selector('a', content: 'file1')
-          expect(node.last).to have_selector('a', content: 'file2')
-
+        expect(last_response.body).to have_tag('li') do
+          with_tag('a', text: 'file1')
+          with_tag('a', text: 'file2')
         end
       end
-
     end
 
     context 'when json content-type is requested' do
-
       before do
         get '/files', {}, 'HTTP_ACCEPT' => 'application/json'
       end
@@ -168,9 +144,7 @@ describe 'ferver' do
         expect(list.count).to eq(2)
         expect(list).to match_array(%w(file1 file2))
       end
-
     end
-
   end
 
   describe 'downloading a file' do
@@ -183,7 +157,6 @@ describe 'ferver' do
     end
 
     context 'when requesting a file out of range' do
-
       before do
         @file_list.expects(:file_id_is_valid?).with(3).returns(false)
         get '/files/3'
@@ -192,11 +165,9 @@ describe 'ferver' do
       it 'should return not_found' do
         expect(last_response).to be_not_found
       end
-
     end
 
     context 'when requesting invalid file id' do
-
       before do
         @file_list.expects(:file_id_is_valid?).never
         get '/files/foo'
@@ -205,11 +176,9 @@ describe 'ferver' do
       it 'should return not_found' do
         expect(last_response).to be_bad_request
       end
-
     end
 
     context 'when requesting a valid file id' do
-
       before { get '/files/0' }
 
       xit 'should return ok response' do
@@ -221,7 +190,5 @@ describe 'ferver' do
       end
 
     end
-
   end
-
 end

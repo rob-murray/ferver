@@ -25,7 +25,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rack-test', '~> 0.6'
   spec.add_development_dependency 'mocha', '~> 1.0'
   spec.add_development_dependency 'spork', '~> 0.9'
-  spec.add_development_dependency 'capybara', '~> 2.3'
+  spec.add_development_dependency 'rspec-html-matchers', '~> 0.6'
   spec.add_development_dependency 'coveralls', '~> 0.7'
   spec.add_development_dependency 'codeclimate-test-reporter'
 

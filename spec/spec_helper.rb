@@ -7,7 +7,7 @@ require 'codeclimate-test-reporter'
 ENV['RACK_ENV'] = 'test'
 
 CodeClimate::TestReporter.start
-Coveralls.wear! # this uses SimpleCov under its bonnet
+Coveralls.wear!
 
 Spork.prefork do
   require File.join(File.dirname(__FILE__), '..', '/lib/', 'ferver')
@@ -17,7 +17,7 @@ Spork.prefork do
   require 'sinatra'
   require 'rspec'
   require 'rack/test'
-  require 'webrat'
+  require 'rspec-html-matchers'
 
   # test environment stuff
   set :environment, :test
@@ -27,9 +27,9 @@ Spork.prefork do
 
   EMPTY_FILE_LIST = []
 
-  RSpec.configure do |conf|
-    conf.include Rack::Test::Methods
-    conf.mock_framework = :mocha
+  RSpec.configure do |config|
+    config.include Rack::Test::Methods
+    config.mock_framework = :mocha
   end
 
   def app
