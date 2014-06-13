@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Ferver::FileList do
-  before { Dir.stubs(:exist?).returns(true) }
+  before { allow(Dir).to receive(:exist?).and_return(true) }
   subject { Ferver::FileList.new('/foo') }
 
   describe 'creating instance' do
@@ -15,7 +15,8 @@ describe Ferver::FileList do
       let(:path) { '/foo' }
 
       it 'should find files in path argument' do
-        Dir.expects(:foreach).with(path).returns(EMPTY_FILE_LIST)
+        expect(Dir).to receive(:foreach).with(path).and_return(EMPTY_FILE_LIST)
+
         Ferver::FileList.new(path)
       end
     end
@@ -24,21 +25,22 @@ describe Ferver::FileList do
       let(:path) { '/foo' }
 
       it 'should test if directory exists' do
-        Dir.expects(:exist?).with(path).returns(true)
-        Dir.stubs(:foreach).returns(EMPTY_FILE_LIST)
+        expect(Dir).to receive(:exist?).with(path).and_return(true)
+        allow(Dir).to receive(:foreach).with(path).and_return(EMPTY_FILE_LIST)
 
         Ferver::FileList.new(path)
       end
 
       it 'should raise exception' do
-        Dir.stubs(:exist?).returns(false)
+        allow(Dir).to receive(:exist?).with(path).and_return(false)
+
         expect { Ferver::FileList.new(path) }.to raise_error(Ferver::DirectoryNotFoundError)
       end
     end
   end
 
   context 'when path directory is empty' do
-    before { Dir.stubs(:foreach).returns(EMPTY_FILE_LIST) }
+    before { allow(Dir).to receive(:foreach).and_return(EMPTY_FILE_LIST) }
 
     it 'should have zero #file_count' do
       expect(subject.file_count).to eq(0)
@@ -51,8 +53,8 @@ describe Ferver::FileList do
 
   context 'when path directory contains current working dir and parent' do
     before(:each) do
-      Dir.stubs(:foreach).multiple_yields('.', '..', 'file1')
-      File.stubs(:file?).returns(true)
+      allow(Dir).to receive(:foreach).and_yield('.').and_yield('.').and_yield('file1')
+      allow(File).to receive(:file?).and_return(true)
     end
 
     it 'should not count current working dir and parent' do
@@ -66,8 +68,8 @@ describe Ferver::FileList do
 
   context 'when path directory contains file and directory' do
     before(:each) do
-      Dir.stubs(:foreach).multiple_yields('file1', 'a_directory')
-      File.expects(:file?).at_most(2).returns(true, false)
+      allow(Dir).to receive(:foreach).and_yield('file1').and_yield('a_directory')
+      allow(File).to receive(:file?).twice.and_return(true, false)
     end
 
     it 'should not count the directory' do
@@ -81,8 +83,8 @@ describe Ferver::FileList do
 
   context 'when path directory contains valid files' do
     before do
-      Dir.stubs(:foreach).multiple_yields('file1', 'file2')
-      File.stubs(:file?).returns(true)
+      allow(Dir).to receive(:foreach).and_yield('file1').and_yield('file2')
+      allow(File).to receive(:file?).twice.and_return(true)
     end
 
     it 'should count all files' do
@@ -95,9 +97,9 @@ describe Ferver::FileList do
   end
 
   describe 'requesting files' do
-    before do
-      Dir.stubs(:foreach).multiple_yields('file1', 'file2')
-      File.stubs(:file?).returns(true)
+    before(:each) do
+      allow(Dir).to receive(:foreach).and_yield('file1').and_yield('file2')
+      allow(File).to receive(:file?).and_return(true)
     end
 
     context 'when requesting valid file_id' do

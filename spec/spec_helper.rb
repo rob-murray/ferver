@@ -29,7 +29,6 @@ Spork.prefork do
 
   RSpec.configure do |config|
     config.include Rack::Test::Methods
-    config.mock_framework = :mocha
   end
 
   def app
