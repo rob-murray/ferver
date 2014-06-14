@@ -43,11 +43,11 @@ describe Ferver::FileList do
     before { allow(Dir).to receive(:foreach).and_return(EMPTY_FILE_LIST) }
 
     it 'should have zero #file_count' do
-      expect(subject.file_count).to eq(0)
+      expect(subject.size).to eq(0)
     end
 
     it 'should return empty array of files' do
-      expect(subject.files).to eq(EMPTY_FILE_LIST)
+      expect(subject.all).to eq(EMPTY_FILE_LIST)
     end
   end
 
@@ -58,11 +58,11 @@ describe Ferver::FileList do
     end
 
     it 'should not count current working dir and parent' do
-      expect(subject.file_count).to eq(1)
+      expect(subject.size).to eq(1)
     end
 
     it 'should not include current working dir and parent' do
-      expect(subject.files).to eq(['file1'])
+      expect(subject.all).to eq(['file1'])
     end
   end
 
@@ -73,26 +73,37 @@ describe Ferver::FileList do
     end
 
     it 'should not count the directory' do
-      expect(subject.file_count).to eq(1)
+      expect(subject.size).to eq(1)
     end
 
     it 'should not include the directory' do
-      expect(subject.files).to eq(['file1'])
+      expect(subject.all).to eq(['file1'])
     end
   end
 
   context 'when path directory contains valid files' do
+    let(:files) { %w(file1 file2) }
     before do
-      allow(Dir).to receive(:foreach).and_yield('file1').and_yield('file2')
+      allow(Dir).to receive(:foreach).and_yield(files[0]).and_yield(files[1])
       allow(File).to receive(:file?).twice.and_return(true)
     end
 
     it 'should count all files' do
-      expect(subject.file_count).to eq(2)
+      expect(subject.size).to eq(2)
     end
 
     it 'should list all files' do
-      expect(subject.files).to eq(%w(file1 file2))
+      expect(subject.all).to eq(files)
+    end
+
+    describe 'iterating over files list' do
+      it 'should yield files in order' do
+        i = 0
+        subject.each do | file |
+          expect(file).to eq(files[i])
+          i += 1
+        end
+      end
     end
   end
 

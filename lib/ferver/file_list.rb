@@ -1,17 +1,21 @@
+require 'forwardable'
+
 # A representation of Ferver's file list
 #
 module Ferver
   class FileList
-    # List of files
-    attr_reader :files
+    extend Forwardable
+    def_delegators :@files, :size, :each
+    include Enumerable
 
-    # create a new instance with a path
+    # Create a new instance with a path
     #
     def initialize(path)
       fail ArgumentError, 'No path is specified' if path.empty?
       fail DirectoryNotFoundError unless Dir.exist?(path)
 
-      @file_path = File.expand_path(path)
+      @files = []
+      @configured_file_path = File.expand_path(path)
       find_files
     end
 
@@ -24,32 +28,32 @@ module Ferver
     # Is the file id a valid id for Ferver to serve
     #
     def file_id_is_valid?(file_id)
-      file_id < @files.size
+      file_id < files.size
     end
 
     # Filename by its index
     #
     def file_by_id(id)
-      @files.fetch(id)
+      files.fetch(id)
     end
 
-    # Number of files in list
-    #
-    def file_count
-      @files.size
+    def all
+      files
     end
 
     private
 
-      # Iterate through files in specified dir for files
-      #
+    attr_reader :configured_file_path, :files
+
+    # Iterate through files in specified dir for files
+    #
     def find_files
       @files = []
 
-      Dir.foreach(@file_path) do |file|
+      Dir.foreach(configured_file_path) do |file|
         next if file == '.' || file == '..'
 
-        file_path = FileList.path_for_file(@file_path, file)
+        file_path = FileList.path_for_file(configured_file_path, file)
         @files << file if File.file?(file_path)
       end
     end

@@ -22,8 +22,8 @@ describe 'ferver' do
 
   describe 'choosing directory to serve files from' do
     before do
-      allow(file_list).to receive(:files).and_return(EMPTY_FILE_LIST)
-      allow(file_list).to receive(:file_count).and_return(0)
+      allow(file_list).to receive(:all).and_return(EMPTY_FILE_LIST)
+      allow(file_list).to receive(:size).and_return(0)
     end
 
     context 'when no directory is specified' do
@@ -59,8 +59,8 @@ describe 'ferver' do
 
   context 'given an empty list of files' do
     before do
-      allow(file_list).to receive(:files).and_return(EMPTY_FILE_LIST)
-      allow(file_list).to receive(:file_count).and_return(0)
+      allow(file_list).to receive(:all).and_return(EMPTY_FILE_LIST)
+      allow(file_list).to receive(:size).and_return(0)
       allow(Ferver::FileList).to receive(:new).and_return(file_list)
     end
 
@@ -96,8 +96,8 @@ describe 'ferver' do
 
   context 'given a list of files' do
     before do
-      allow(file_list).to receive(:files).and_return(%w(file1 file2))
-      allow(file_list).to receive(:file_count).and_return(2)
+      allow(file_list).to receive(:all).and_return(%w(file1 file2))
+      allow(file_list).to receive(:size).and_return(2)
       allow(Ferver::FileList).to receive(:new).and_return(file_list)
     end
 

@@ -12,7 +12,7 @@ module Ferver
     end
 
     error Ferver::DirectoryNotFoundError do
-      halt 500, "Ferver: Directory '#{@current_ferver_path}' not found."
+      halt 500, "Ferver: Directory '#{current_ferver_path}' not found."
     end
 
     # redirect to file list
@@ -25,11 +25,11 @@ module Ferver
       if request.preferred_type.to_s == 'application/json'
         content_type :json
 
-        @ferver_list.files.to_json
+        ferver_list.all.to_json
       else
-        erb :index, locals: { file_list: @ferver_list.files,
+        erb :index, locals: { file_list: ferver_list.all,
                               ferver_path: File.expand_path(current_ferver_path),
-                              file_count: @ferver_list.file_count }
+                              file_count: ferver_list.size }
       end
     end
 
@@ -37,8 +37,8 @@ module Ferver
     get '/files/:id' do
       halt(400, 'Bad request') unless valid_file_request?
 
-      if @ferver_list.file_id_is_valid?(@file_id_request.value)
-        file_name = @ferver_list.file_by_id(@file_id_request.value)
+      if ferver_list.file_id_is_valid?(file_id_request.value)
+        file_name = ferver_list.file_by_id(file_id_request.value)
         file = FileList.path_for_file(current_ferver_path, file_name)
 
         send_file(file, disposition: 'attachment', filename: File.basename(file))
@@ -48,6 +48,8 @@ module Ferver
     end
 
     private
+
+    attr_reader :ferver_list, :current_ferver_path
 
     def file_id_request
       @file_id_request ||= FileIdRequest.new(params[:id])
