@@ -37,7 +37,7 @@ describe 'ferver' do
     context 'when the directory passed via configuration' do
       before do
         Ferver.configure do |conf|
-         conf.directory_path = '/foo'
+          conf.directory_path = '/foo'
         end
       end
 
