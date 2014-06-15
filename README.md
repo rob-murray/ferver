@@ -31,7 +31,7 @@ $ gem install ferver
 
 ### Usage
 
-You can run **ferver** from any directory, just pass in the directory you want to serve files from or if leave blank to use the current directory.
+You can run **ferver** from any directory, just pass in the directory you want to serve files from as a command line argument or leave blank to use the current directory.
 
 ##### Use the current directory
 
@@ -44,7 +44,15 @@ $ ferver
 For exmple, to serve files from **/Users/rob/Projects/ferver/** directory pass the path in as below;
 
 ```bash
-$ ferver /Users/rob/Projects/ferver/
+$ ferver -d /Users/rob/Projects/ferver/
+````
+
+##### Command line help
+
+For a list of arguments just use the `-h` switch.
+
+```bash
+$ ferver -h
 ````
 
 ### Accessing files
@@ -75,7 +83,7 @@ For example to download file appearing third in the list displayed earlier, requ
 
 Please use the GitHub pull-request mechanism to submit contributions.
 
-After cloning the repo, you can test the application without having to install the gem package by running the `server`, or it's alias `s` Rake task;
+After cloning the repo, you can run the web application without having to install the gem package by running a Rake task named `server`, or it's alias `s`.
 
 ```bash
 $ rake s
