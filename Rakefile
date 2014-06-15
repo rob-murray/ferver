@@ -17,7 +17,9 @@ task :server do
 
   # use the last argument (first is the rake task) as the file path to serve from
   ferver_path = (ARGV.length == 2 && ARGV.last) || nil
-  Ferver::App.set :ferver_path, ferver_path
+  Ferver.configure do |config|
+    config.directory_path = ferver_path
+  end
   Ferver::App.set :raise_errors, false
 
   # run!

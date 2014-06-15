@@ -19,7 +19,9 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-Ferver::App.set :ferver_path, options[:directory]
+Ferver.configure do |config|
+  config.directory_path = options[:directory]
+end
 Ferver::App.set :environment, :production
 
 # run!

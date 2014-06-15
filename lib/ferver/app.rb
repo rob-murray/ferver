@@ -1,7 +1,8 @@
 require 'sinatra'
-require 'json'
 require 'sinatra/base'
+require 'json'
 require_relative './directory_not_found_error'
+require_relative './configuration'
 
 module Ferver
   class App < Sinatra::Base
@@ -49,7 +50,7 @@ module Ferver
 
     private
 
-    attr_reader :ferver_list, :current_ferver_path
+    attr_reader :ferver_list
 
     def file_id_request
       @file_id_request ||= FileIdRequest.new(params[:id])
@@ -59,18 +60,8 @@ module Ferver
       file_id_request.valid?
     end
 
-    # Return the absolute path to the directory Ferver is serving files from.
-    # This can be specified in Sinatra configuration:
-    #   e.g. `Ferver::App.set :ferver_path, ferver_path` or the default if nil
-    #
     def current_ferver_path
-      @current_ferver_path_ ||= begin
-        if settings.respond_to?(:ferver_path) && settings.ferver_path
-          settings.ferver_path
-        else
-          Ferver::DEFAULT_FILE_SERVER_DIR_PATH
-        end
-      end
+      Ferver.configuration.directory_path
     end
   end
 end

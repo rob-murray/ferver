@@ -35,7 +35,11 @@ describe 'ferver' do
     end
 
     context 'when the directory passed via configuration' do
-      before { Ferver::App.set :ferver_path, '/foo' }
+      before do
+        Ferver.configure do |conf|
+         conf.directory_path = '/foo'
+        end
+      end
 
       it 'will use directory specified' do
         expect(Ferver::FileList).to receive(:new).with('/foo').and_return(file_list)
