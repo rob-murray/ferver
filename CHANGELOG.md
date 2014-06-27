@@ -20,7 +20,7 @@ All notable changes to this project will be documented in this file.
 ## 1.1.0 - 2014-03-18 - 59d6ddf
 
 ### Added
-- Run *Sinatra* in production mode when started from `bin/`.
+- Run **Sinatra** in production mode when started from `bin/`.
 
 ### Deprecated
 - Nothing.
@@ -34,7 +34,7 @@ All notable changes to this project will be documented in this file.
 ## 1.0.0 - 2014-03-08 - 0522648
 
 ### Added
-- Redesign `Ferver` into a *Rubygem*.
+- Redesign `Ferver` into a **Rubygem**.
 
 ### Deprecated
 - Nothing.
