@@ -1,6 +1,19 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 1.2.1 - 2014-11-14 - XX
+
+### Added
+
+- State minimum Ruby version
+
+### Deprecated
+- Nothing.
+
+### Removed
+- Nothing.
+
+
 ## 1.2.0 - 2014-06-15 - 72dc58b
 
 ### Added
