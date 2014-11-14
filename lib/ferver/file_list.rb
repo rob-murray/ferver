@@ -5,8 +5,9 @@ require 'forwardable'
 module Ferver
   class FileList
     extend Forwardable
-    def_delegators :@files, :size, :each
     include Enumerable
+
+    def_delegators :@files, :size, :each
 
     # Create a new instance with a path
     #
@@ -27,7 +28,7 @@ module Ferver
 
     # Is the file id a valid id for Ferver to serve
     #
-    def file_id_is_valid?(file_id)
+    def file_id_valid?(file_id)
       file_id < files.size
     end
 

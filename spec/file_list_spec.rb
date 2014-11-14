@@ -116,12 +116,12 @@ describe Ferver::FileList do
     context 'when requesting valid file_id' do
       # TODO: possible to redesign this
 
-      it '#file_id_is_valid? should return true for first file' do
-        expect(subject.file_id_is_valid?(0)).to be_truthy
+      it '#file_id_valid? should return true for first file' do
+        expect(subject.file_id_valid?(0)).to be_truthy
       end
 
-      it '#file_id_is_valid? should return true for second file' do
-        expect(subject.file_id_is_valid?(1)).to be_truthy
+      it '#file_id_valid? should return true for second file' do
+        expect(subject.file_id_valid?(1)).to be_truthy
       end
 
       it '#file_by_id should return the correct file for the first file' do
@@ -135,7 +135,7 @@ describe Ferver::FileList do
 
     context 'when requesting invalid file_id' do
       it 'should return false for invalid file_id' do
-        expect(subject.file_id_is_valid?(2)).to be_falsey
+        expect(subject.file_id_valid?(2)).to be_falsey
       end
 
       it 'should raise_error if file_by_id is called' do

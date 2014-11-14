@@ -36,7 +36,7 @@ module Ferver
     get '/files/:id' do
       halt(400, 'Bad request') unless valid_file_request?
 
-      if ferver_list.file_id_is_valid?(file_id_request.value)
+      if ferver_list.file_id_valid?(file_id_request.value)
         file_name = ferver_list.file_by_id(file_id_request.value)
         file = FileList.path_for_file(current_ferver_path, file_name)
 
