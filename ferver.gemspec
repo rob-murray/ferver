@@ -12,6 +12,7 @@ Gem::Specification.new do |spec|
   spec.description   = %q(Ferver is a super, simple ruby gem to serve files over http; useful as a basic file server to quickly share files on your local network.)
   spec.homepage      = 'https://github.com/rob-murray/ferver'
   spec.license       = 'MIT'
+  spec.required_ruby_version = '>= 1.9.3'
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
