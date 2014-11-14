@@ -75,7 +75,7 @@ curl -i -H "Accept: application/json" http://localhost:4567/files
 
 #### Download a file
 
-Files are available via their index in the list, e.g. `http://localhost:4567/files/:id`
+Files are available via their zero based index in the list, e.g. `http://localhost:4567/files/:id`
 
 For example to download file appearing third in the list displayed earlier, request `http://localhost:4567/files/2`
 
