@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## 1.2.1 - 2014-11-14 - XX
+## 1.2.1 - 2014-11-15 - de54826
 
 ### Added
 
