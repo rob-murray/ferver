@@ -1,5 +1,7 @@
 ## Ferver = File-Server
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rob-murray/ferver?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 #### Ferver: A simple web app to serve files over HTTP packaged as a Ruby gem.
 
 [![Build Status](https://travis-ci.org/rob-murray/ferver.svg?branch=master)](https://travis-ci.org/rob-murray/ferver)
