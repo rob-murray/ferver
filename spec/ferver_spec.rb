@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'ferver' do
-  let(:file_list) { double('file-list') }
+  let(:file_list) { double('Ferver::FileList') }
 
   context 'given a request to the server root' do
     before do
@@ -22,7 +22,7 @@ describe 'ferver' do
 
   describe 'choosing directory to serve files from' do
     before do
-      allow(file_list).to receive(:all).and_return(EMPTY_FILE_LIST)
+      allow(file_list).to receive(:each_with_index)
       allow(file_list).to receive(:size).and_return(0)
     end
 
@@ -63,7 +63,7 @@ describe 'ferver' do
 
   context 'given an empty list of files' do
     before do
-      allow(file_list).to receive(:all).and_return(EMPTY_FILE_LIST)
+      allow(file_list).to receive(:each_with_index)
       allow(file_list).to receive(:size).and_return(0)
       allow(Ferver::FileList).to receive(:new).and_return(file_list)
     end
@@ -83,6 +83,8 @@ describe 'ferver' do
 
     context 'when json content-type is requested' do
       before do
+        allow(file_list).to receive(:map).and_return([])
+
         get '/files', {}, 'HTTP_ACCEPT' => 'application/json'
       end
 
@@ -102,7 +104,7 @@ describe 'ferver' do
     let(:file_1) { double('file', name: 'file1') }
     let(:file_2) { double('file', name: 'file2') }
     before do
-      allow(file_list).to receive(:all).and_return([file_1, file_2])
+      allow(file_list).to receive(:each_with_index).and_yield(file_1, 1).and_yield(file_2, 2)
       allow(file_list).to receive(:size).and_return(2)
       allow(Ferver::FileList).to receive(:new).and_return(file_list)
     end
@@ -131,6 +133,8 @@ describe 'ferver' do
 
       context 'when json content-type is requested' do
         before do
+          allow(file_list).to receive(:map).and_return([file_1.name, file_2.name])
+
           get '/files', {}, 'HTTP_ACCEPT' => 'application/json'
         end
 

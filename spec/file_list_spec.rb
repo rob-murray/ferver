@@ -50,7 +50,7 @@ describe Ferver::FileList do
     end
 
     it 'should return empty array of files' do
-      expect(subject.all).to eq(EMPTY_FILE_LIST)
+      expect(subject.to_a).to eq(EMPTY_FILE_LIST)
     end
   end
 
@@ -65,7 +65,7 @@ describe Ferver::FileList do
     end
 
     it 'should not include current working dir and parent' do
-      expect(subject.all.first.name).to eq(file_1.name)
+      expect(subject.to_a.first.name).to eq(file_1.name)
     end
   end
 
@@ -80,7 +80,7 @@ describe Ferver::FileList do
     end
 
     it 'should not include the directory' do
-      expect(subject.all.first.name).to eq(file_1.name)
+      expect(subject.to_a.first.name).to eq(file_1.name)
     end
   end
 
