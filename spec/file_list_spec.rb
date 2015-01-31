@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe Ferver::FileList do
+  let(:file_1) { double('file', name: 'file1') }
+  let(:file_2) { double('file', name: 'file2') }
+
   before { allow(Dir).to receive(:exist?).and_return(true) }
   subject { Ferver::FileList.new('/foo') }
 
@@ -47,13 +50,13 @@ describe Ferver::FileList do
     end
 
     it 'should return empty array of files' do
-      expect(subject.all).to eq(EMPTY_FILE_LIST)
+      expect(subject.to_a).to eq(EMPTY_FILE_LIST)
     end
   end
 
   context 'when path directory contains current working dir and parent' do
     before(:each) do
-      allow(Dir).to receive(:foreach).and_yield('.').and_yield('.').and_yield('file1')
+      allow(Dir).to receive(:foreach).and_yield('.').and_yield('.').and_yield(file_1.name)
       allow(File).to receive(:file?).and_return(true)
     end
 
@@ -62,13 +65,13 @@ describe Ferver::FileList do
     end
 
     it 'should not include current working dir and parent' do
-      expect(subject.all).to eq(['file1'])
+      expect(subject.to_a.first.name).to eq(file_1.name)
     end
   end
 
   context 'when path directory contains file and directory' do
     before(:each) do
-      allow(Dir).to receive(:foreach).and_yield('file1').and_yield('a_directory')
+      allow(Dir).to receive(:foreach).and_yield(file_1.name).and_yield('a_directory')
       allow(File).to receive(:file?).twice.and_return(true, false)
     end
 
@@ -77,12 +80,12 @@ describe Ferver::FileList do
     end
 
     it 'should not include the directory' do
-      expect(subject.all).to eq(['file1'])
+      expect(subject.to_a.first.name).to eq(file_1.name)
     end
   end
 
   context 'when path directory contains valid files' do
-    let(:files) { %w(file1 file2) }
+    let(:files) { [file_1.name, file_2.name] }
     before do
       allow(Dir).to receive(:foreach).and_yield(files[0]).and_yield(files[1])
       allow(File).to receive(:file?).twice.and_return(true)
@@ -92,15 +95,11 @@ describe Ferver::FileList do
       expect(subject.size).to eq(2)
     end
 
-    it 'should list all files' do
-      expect(subject.all).to eq(files)
-    end
-
     describe 'iterating over files list' do
       it 'should yield files in order' do
         i = 0
         subject.each do | file |
-          expect(file).to eq(files[i])
+          expect(file.name).to eq(files[i])
           i += 1
         end
       end
@@ -109,35 +108,21 @@ describe Ferver::FileList do
 
   describe 'requesting files' do
     before(:each) do
-      allow(Dir).to receive(:foreach).and_yield('file1').and_yield('file2')
+      allow(Dir).to receive(:foreach).and_yield(file_1.name).and_yield(file_2.name)
       allow(File).to receive(:file?).and_return(true)
     end
 
     context 'when requesting valid file_id' do
-      # TODO: possible to redesign this
-
-      it '#file_id_valid? should return true for first file' do
-        expect(subject.file_id_valid?(0)).to be_truthy
-      end
-
-      it '#file_id_valid? should return true for second file' do
-        expect(subject.file_id_valid?(1)).to be_truthy
-      end
-
       it '#file_by_id should return the correct file for the first file' do
-        expect(subject.file_by_id(0)).to eq('file1')
+        expect(subject.file_by_id(0).name).to eq(file_1.name)
       end
 
       it '#file_by_id should return the correct file for the second file' do
-        expect(subject.file_by_id(1)).to eq('file2')
+        expect(subject.file_by_id(1).name).to eq(file_2.name)
       end
     end
 
     context 'when requesting invalid file_id' do
-      it 'should return false for invalid file_id' do
-        expect(subject.file_id_valid?(2)).to be_falsey
-      end
-
       it 'should raise_error if file_by_id is called' do
         expect { subject.file_by_id(2) }.to raise_error(IndexError)
       end

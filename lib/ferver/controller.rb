@@ -24,10 +24,10 @@ module Ferver
       if request.preferred_type.to_s == 'application/json'
         content_type :json
 
-        ferver_list.all.to_json
+        ferver_list.map{ |f| f.name }.to_json
       else
-        erb :index, locals: { file_list: ferver_list.all,
-                              ferver_path: File.expand_path(current_ferver_path),
+        erb :index, locals: { file_list: ferver_list,
+                              ferver_path: current_full_path,
                               file_count: ferver_list.size }
       end
     end
@@ -36,14 +36,10 @@ module Ferver
     get '/files/:id' do
       halt(400, 'Bad request') unless valid_file_request?
 
-      if ferver_list.file_id_valid?(file_id_request.value)
-        file_name = ferver_list.file_by_id(file_id_request.value)
-        file = FileList.path_for_file(current_ferver_path, file_name)
-
-        send_file(file, disposition: 'attachment', filename: File.basename(file))
-      else
-        status 404
-      end
+      find_file
+      send_file(
+        @file.path_to_file, disposition: 'attachment', filename: @file.name
+      )
     end
 
     private
@@ -58,8 +54,18 @@ module Ferver
       file_id_request.valid?
     end
 
+    def find_file
+      @file = ferver_list.file_by_id(file_id_request.value)
+    rescue IndexError
+      halt 404, 'File requested not found.'
+    end
+
     def current_ferver_path
       Ferver.configuration.directory_path
+    end
+
+    def current_full_path
+      File.expand_path(current_ferver_path)
     end
   end
 end

@@ -4,10 +4,7 @@ require 'forwardable'
 #
 module Ferver
   class FileList
-    extend Forwardable
     include Enumerable
-
-    def_delegators :@files, :size, :each
 
     # Create a new instance with a path
     #
@@ -20,26 +17,19 @@ module Ferver
       find_files
     end
 
-    # Return an absolute path to a `file_name` in the `directory`
-    #
-    def self.path_for_file(directory, file_name)
-      File.join(directory, file_name)
+    def each(&block)
+      files.each(&block)
     end
 
-    # Is the file id a valid id for Ferver to serve
-    #
-    def file_id_valid?(file_id)
-      file_id < files.size
+    def size
+      files.size
     end
 
     # Filename by its index
+    # An id out of range with raise IndexError
     #
     def file_by_id(id)
       files.fetch(id)
-    end
-
-    def all
-      files
     end
 
     private
@@ -51,11 +41,11 @@ module Ferver
     def find_files
       @files = []
 
-      Dir.foreach(configured_file_path) do |file|
-        next if file == '.' || file == '..'
+      Dir.foreach(configured_file_path) do |file_name|
+        next if file_name == '.' || file_name == '..'
 
-        file_path = FileList.path_for_file(configured_file_path, file)
-        @files << file if File.file?(file_path)
+        found_file = FoundFile.new(configured_file_path, file_name)
+        @files << found_file if found_file.valid?
       end
     end
   end
