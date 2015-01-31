@@ -24,7 +24,7 @@ module Ferver
       if request.preferred_type.to_s == 'application/json'
         content_type :json
 
-        ferver_list.all.to_json
+        ferver_list.all.map{ |f| f.name }.to_json
       else
         erb :index, locals: { file_list: ferver_list.all,
                               ferver_path: File.expand_path(current_ferver_path),
@@ -37,10 +37,9 @@ module Ferver
       halt(400, 'Bad request') unless valid_file_request?
 
       if ferver_list.file_id_valid?(file_id_request.value)
-        file_name = ferver_list.file_by_id(file_id_request.value)
-        file = FileList.path_for_file(current_ferver_path, file_name)
+        file = ferver_list.file_by_id(file_id_request.value)
 
-        send_file(file, disposition: 'attachment', filename: File.basename(file))
+        send_file(file.path_for_file, disposition: 'attachment', filename: file.name)
       else
         status 404
       end

@@ -20,11 +20,7 @@ module Ferver
       find_files
     end
 
-    # Return an absolute path to a `file_name` in the `directory`
-    #
-    def self.path_for_file(directory, file_name)
-      File.join(directory, file_name)
-    end
+
 
     # Is the file id a valid id for Ferver to serve
     #
@@ -51,11 +47,11 @@ module Ferver
     def find_files
       @files = []
 
-      Dir.foreach(configured_file_path) do |file|
-        next if file == '.' || file == '..'
+      Dir.foreach(configured_file_path) do |found_file|
+        next if found_file == '.' || found_file == '..'
 
-        file_path = FileList.path_for_file(configured_file_path, file)
-        @files << file if File.file?(file_path)
+        file = FoundFile.new(configured_file_path, found_file)
+        @files << file if file.valid?
       end
     end
   end

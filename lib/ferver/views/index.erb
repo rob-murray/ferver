@@ -7,9 +7,9 @@
   <body>
     <h3>Files served:</h3>
     <ul>
-      <% file_list.each_with_index do |file_name, index| %>
+      <% file_list.each_with_index do |file, index| %>
 
-        <li><a href="/files/<%= index %>"><%= file_name %></a></li>
+        <li><a href="/files/<%= index %>"><%= file.name %></a></li>
 
       <% end %>
 
