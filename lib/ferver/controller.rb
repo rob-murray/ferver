@@ -39,7 +39,7 @@ module Ferver
       if ferver_list.file_id_valid?(file_id_request.value)
         file = ferver_list.file_by_id(file_id_request.value)
 
-        send_file(file.path_for_file, disposition: 'attachment', filename: file.name)
+        send_file(file.path_to_file, disposition: 'attachment', filename: file.name)
       else
         status 404
       end
