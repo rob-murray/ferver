@@ -36,13 +36,8 @@ module Ferver
     get '/files/:id' do
       halt(400, 'Bad request') unless valid_file_request?
 
-      if ferver_list.file_id_valid?(file_id_request.value)
-        file = ferver_list.file_by_id(file_id_request.value)
-
-        send_file(file.path_to_file, disposition: 'attachment', filename: file.name)
-      else
-        status 404
-      end
+      file = find_file
+      send_file(file.path_to_file, disposition: 'attachment', filename: file.name)
     end
 
     private
@@ -55,6 +50,12 @@ module Ferver
 
     def valid_file_request?
       file_id_request.valid?
+    end
+
+    def find_file
+      ferver_list.file_by_id(file_id_request.value)
+    rescue IndexError
+      halt 404, 'File requested not found.'
     end
 
     def current_ferver_path

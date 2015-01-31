@@ -151,7 +151,7 @@ describe 'ferver' do
 
       context 'when requesting a file out of range' do
         before do
-          allow(file_list).to receive(:file_id_valid?).with(3).and_return(false)
+          allow(file_list).to receive(:file_by_id).with(3).and_raise(IndexError)
           get '/files/3'
         end
 

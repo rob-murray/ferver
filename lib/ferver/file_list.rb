@@ -20,14 +20,6 @@ module Ferver
       find_files
     end
 
-
-
-    # Is the file id a valid id for Ferver to serve
-    #
-    def file_id_valid?(file_id)
-      file_id < files.size
-    end
-
     # Filename by its index
     #
     def file_by_id(id)
