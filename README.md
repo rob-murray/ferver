@@ -7,7 +7,6 @@
 [![Coverage Status](https://coveralls.io/repos/rob-murray/ferver/badge.png)](https://coveralls.io/r/rob-murray/ferver)
 [![Dependency Status](https://gemnasium.com/rob-murray/ferver.svg)](https://gemnasium.com/rob-murray/ferver)
 [![Gem Version](https://badge.fury.io/rb/ferver.svg)](http://badge.fury.io/rb/ferver)
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/rob-murray/ferver?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ### Description
 
