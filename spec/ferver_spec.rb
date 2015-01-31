@@ -99,8 +99,10 @@ describe 'ferver' do
   end
 
   context 'given a list of files' do
+    let(:file_1) { double('file', name: 'file1') }
+    let(:file_2) { double('file', name: 'file2') }
     before do
-      allow(file_list).to receive(:all).and_return(%w(file1 file2))
+      allow(file_list).to receive(:all).and_return([file_1, file_2])
       allow(file_list).to receive(:size).and_return(2)
       allow(Ferver::FileList).to receive(:new).and_return(file_list)
     end
@@ -140,7 +142,7 @@ describe 'ferver' do
         it 'should contain no file list in response content' do
           list = JSON.parse last_response.body
           expect(list.count).to eq(2)
-          expect(list).to match_array(%w(file1 file2))
+          expect(list).to match_array([file_1.name, file_2.name])
         end
       end
     end
