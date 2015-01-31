@@ -12,12 +12,7 @@ module Ferver
     def value=(value)
       id = parse_value(value)
 
-      if id.nil?
-        @is_valid = false
-      else
-        @value = id
-        @is_valid = true
-      end
+      @value = id
     end
 
     def valid?
@@ -28,9 +23,11 @@ module Ferver
 
     def parse_value(value)
       begin
-        Integer(value)
+        int_val = Integer(value)
+        @is_valid = true
+        int_val
       rescue
-        nil
+        @is_valid = false
       end
     end
   end
