@@ -24,9 +24,9 @@ module Ferver
       if request.preferred_type.to_s == 'application/json'
         content_type :json
 
-        ferver_list.all.map{ |f| f.name }.to_json
+        ferver_list.map{ |f| f.name }.to_json
       else
-        erb :index, locals: { file_list: ferver_list.all,
+        erb :index, locals: { file_list: ferver_list,
                               ferver_path: current_full_path,
                               file_count: ferver_list.size }
       end
