@@ -67,7 +67,7 @@ List available files in your browser.
 
 #### JSON
 
-Requesting content-type `json`, for exampled passing the header `Accept: application/json` will return the list of files as json.
+Requesting content-type `json`, for example passing the header `Accept: application/json` will return the list of files as json.
 
 ```bash
 curl -i -H "Accept: application/json" http://localhost:4567/files
