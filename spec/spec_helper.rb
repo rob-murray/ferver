@@ -29,6 +29,7 @@ Spork.prefork do
 
   RSpec.configure do |config|
     config.include Rack::Test::Methods
+    config.include RSpecHtmlMatchers
   end
 
   def app
