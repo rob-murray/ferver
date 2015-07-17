@@ -10,9 +10,7 @@ module Ferver
     end
 
     def value=(value)
-      id = parse_value(value)
-
-      @value = id
+      @value = parse_value(value)
     end
 
     def valid?

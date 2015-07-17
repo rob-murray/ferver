@@ -10,6 +10,12 @@ module Ferver
       @ferver_list = FileList.new(current_ferver_path)
     end
 
+    before '/files/:id' do
+      halt(400, 'Bad request') unless valid_file_request?
+
+      find_file!
+    end
+
     error Ferver::DirectoryNotFoundError do
       halt 500, "Ferver: Directory '#{current_ferver_path}' not found."
     end
@@ -34,9 +40,6 @@ module Ferver
 
     # download file
     get '/files/:id' do
-      halt(400, 'Bad request') unless valid_file_request?
-
-      find_file
       send_file(
         @file.path_to_file, disposition: 'attachment', filename: @file.name
       )
@@ -54,7 +57,7 @@ module Ferver
       file_id_request.valid?
     end
 
-    def find_file
+    def find_file!
       @file = ferver_list.file_by_id(file_id_request.value)
     rescue IndexError
       halt 404, 'File requested not found.'

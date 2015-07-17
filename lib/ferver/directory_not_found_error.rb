@@ -1,4 +1,3 @@
-
 module Ferver
-  class DirectoryNotFoundError < StandardError; end
+  DirectoryNotFoundError = Class.new(StandardError)
 end
