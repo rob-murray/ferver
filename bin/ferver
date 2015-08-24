@@ -9,6 +9,10 @@ OptionParser.new do |opts|
   opts.banner = 'Ferver: A simple web app to serve files over HTTP. Version: ' + Ferver::VERSION
   opts.separator ''
 
+  opts.on('-i', '--invisible', 'Serve invisible files') do |i|
+    options[:invisible] = i
+  end
+
   opts.on('-d', '--directory [DIRECTORY]', 'Specify the path to the directory to serve files from [optional]') do |directory|
     options[:directory] = directory
   end
@@ -20,6 +24,7 @@ OptionParser.new do |opts|
 end.parse!
 
 Ferver.configure do |config|
+  config.serve_invisible = options[:invisible]
   config.directory_path = options[:directory]
 end
 Ferver::App.set :environment, :production
