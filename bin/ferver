@@ -9,7 +9,7 @@ OptionParser.new do |opts|
   opts.banner = 'Ferver: A simple web app to serve files over HTTP. Version: ' + Ferver::VERSION
   opts.separator ''
 
-  opts.on('-a', '--serve-all', 'Serve hidden files') do |a|
+  opts.on('-a', '--all', 'Serve hidden files') do |a|
     options[:hidden] = a
   end
 
