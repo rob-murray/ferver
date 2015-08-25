@@ -1,6 +1,6 @@
 module Ferver
   class Configuration
-    attr_accessor :directory_path, :serve_invisible
+    attr_accessor :directory_path, :serve_hidden
 
     # Return the absolute path to the directory Ferver is serving files from.
     #
@@ -8,10 +8,10 @@ module Ferver
       @directory_path || Ferver::DEFAULT_FILE_SERVER_DIR_PATH
     end
 
-    # Default to not serving invisible files
+    # Default to not serving hidden files
     #
-    def serve_invisible
-      @serve_invisible || false
+    def serve_hidden
+      @serve_hidden || false
     end
   end
 end

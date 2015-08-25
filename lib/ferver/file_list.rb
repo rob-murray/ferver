@@ -43,7 +43,7 @@ module Ferver
 
       Dir.foreach(configured_file_path) do |file_name|
         next if file_name == '.' || file_name == '..'
-        next if file_name =~ /^\./  && Ferver.configuration.serve_invisible == false
+        next if file_name =~ /^\./  && Ferver.configuration.serve_hidden == false
 
         found_file = FoundFile.new(configured_file_path, file_name)
         @files << found_file if found_file.valid?
