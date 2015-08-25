@@ -94,6 +94,5 @@ module Ferver
       return true if user == Fever.configuration.user && password = Ferver.configuration.password
       return false
     end
-
   end
 end
