@@ -40,7 +40,7 @@ module Ferver
 
     # download file
     get '/files/:id' do
-      etag( @file.etag )
+      etag(@file.etag)
       send_file(
         @file.path_to_file, disposition: 'attachment', filename: @file.name
       )

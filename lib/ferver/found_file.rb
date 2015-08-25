@@ -7,7 +7,7 @@ module Ferver
     def initialize(directory, file_name)
       @file_name = file_name
       @path_to_file = File.join(directory, file_name)
-      @etag = Digest::SHA1.hexdigest( File.read(@path_to_file ) ) if valid?
+      @etag = Digest::SHA1.hexdigest(File.read(@path_to_file)) if valid?
     end
 
     def valid?
