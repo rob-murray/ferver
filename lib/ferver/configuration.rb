@@ -1,6 +1,6 @@
 module Ferver
   class Configuration
-    attr_accessor :directory_path
+    attr_accessor :directory_path, :user, :password
 
     # Return the absolute path to the directory Ferver is serving files from.
     #

@@ -1,13 +1,22 @@
 #!/usr/bin/env ruby
 
+
 require 'optparse'
-require 'sinatra'
+$:.unshift File.join( File.dirname(__FILE__), "/../lib")
 require 'ferver'
 
 options = {}
 OptionParser.new do |opts|
   opts.banner = 'Ferver: A simple web app to serve files over HTTP. Version: ' + Ferver::VERSION
   opts.separator ''
+
+  opts.on('-u', '--user [username]', 'Specify a username for authentication [optional]') do |user|
+    options[:user] = user
+  end
+
+  opts.on('-p', '--password [password]', 'Specify a password for authentication [optional]') do |password|
+    options[:password] = password
+  end
 
   opts.on('-d', '--directory [DIRECTORY]', 'Specify the path to the directory to serve files from [optional]') do |directory|
     options[:directory] = directory
@@ -20,6 +29,8 @@ OptionParser.new do |opts|
 end.parse!
 
 Ferver.configure do |config|
+  config.user           = options[:user]
+  config.password       = options[:password]
   config.directory_path = options[:directory]
 end
 Ferver::App.set :environment, :production
