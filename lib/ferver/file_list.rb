@@ -42,20 +42,23 @@ module Ferver
     def find_files
       @files = []
 
-      #Dir.foreach(configured_file_path) do |file_name|
-      Dir.glob(File.join(configured_file_path , "**", "*"))  do |file_name|
+      puts "Recursive: |#{Ferver.configuration.recursive}"
+      files = Dir.foreach(configured_file_path)   if Ferver.configuration.recursive == false
+      files = Dir.glob(File.join(configured_file_path , "**", "*"))  if Ferver.configuration.recursive == true
+
+      files.each do |file_name|
         next if file_name == '.' || file_name == '..'
 
-        recursive = true
-        if recursive
+        if Ferver.configuration.recursive == true
           base     = Pathname.new(configured_file_path)
           found    = Pathname.new(file_name)
-          relative = found.relative_path_from(base)
-
-          found_file = FoundFile.new(configured_file_path, relative)
+          final_file = found.relative_path_from(base)
         else
-          found_file = FoundFile.new(configured_file_path, file_name)
+          final_file = file_name
         end
+
+        found_file = FoundFile.new(configured_file_path, final_file)
+
         @files << found_file if found_file.valid?
       end
     end
