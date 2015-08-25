@@ -20,30 +20,13 @@ module Ferver
       halt 500, "Ferver: Directory '#{current_ferver_path}' not found."
     end
 
-    helpers do
-      def protected!
-        unless authorized?
-          response['WWW-Authenticate'] = %(Basic realm="Restricted Area")
-          throw(:halt, [401, "Not authorized\n"])
-        end
-      end
-
-      def authorized?
-        @auth ||=  Rack::Auth::Basic::Request.new(request.env)
-        return true if Ferver.configuration.user.nil?
-        @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == [Ferver.configuration.user, Ferver.configuration.password]
-      end
-    end
-
     # redirect to file list
     get '/' do
-      protected!
       redirect to('/files')
     end
 
     # list files
     get '/files' do
-      protected!
       if request.preferred_type.to_s == 'application/json'
         content_type :json
 
@@ -57,7 +40,6 @@ module Ferver
 
     # download file
     get '/files/:id' do
-      protected!
       send_file(
         @file.path_to_file, disposition: 'attachment', filename: @file.name
       )
