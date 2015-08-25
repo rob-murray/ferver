@@ -1,4 +1,5 @@
 require 'forwardable'
+require 'byebug'
 
 # A representation of Ferver's file list
 #
@@ -41,10 +42,20 @@ module Ferver
     def find_files
       @files = []
 
-      Dir.foreach(configured_file_path) do |file_name|
+      #Dir.foreach(configured_file_path) do |file_name|
+      Dir.glob(File.join(configured_file_path , "**", "*"))  do |file_name|
         next if file_name == '.' || file_name == '..'
 
-        found_file = FoundFile.new(configured_file_path, file_name)
+        recursive = true
+        if recursive
+          base     = Pathname.new(configured_file_path)
+          found    = Pathname.new(file_name)
+          relative = found.relative_path_from(base)
+
+          found_file = FoundFile.new(configured_file_path, relative)
+        else
+          found_file = FoundFile.new(configured_file_path, file_name)
+        end
         @files << found_file if found_file.valid?
       end
     end
