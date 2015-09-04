@@ -19,7 +19,7 @@ module HashCache
     store = YAML::Store.new(File.join(ENV['HOME'], '.ferver.yml'))
 
     begin
-      hash = store.transaction { store.fetch(key(file))}
+      hash = store.transaction { store.fetch(key(file)) }
     rescue PStore::Error
       puts "Generating missing etag / hash for #{file}"
       hash = Digest::SHA1.file(file).hexdigest
