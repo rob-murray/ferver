@@ -24,5 +24,7 @@ Ferver.configure do |config|
 end
 Ferver::App.set :environment, :production
 
+Ferver::FileList.new(Ferver.configuration.directory_path)
+
 # run!
 Ferver::App.run!
