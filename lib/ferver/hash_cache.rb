@@ -21,6 +21,7 @@ module HashCache
     begin
       hash = store.transaction { store.fetch(key(file))}
     rescue PStore::Error
+      puts "Generating missing etag / hash for #{file}"
       hash = Digest::SHA1.file(file).hexdigest
       store.transaction { store[key(file)] = hash }
     end
