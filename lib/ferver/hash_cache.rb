@@ -16,7 +16,7 @@ module HashCache
   end
 
   def hash(file)
-    store = YAML::Store.new( File.join(ENV['HOME'], ".ferver.yml"))
+    store = YAML::Store.new(File.join(ENV['HOME'], '.ferver.yml'))
 
     begin
       hash = store.transaction { store.fetch(key(file))}
