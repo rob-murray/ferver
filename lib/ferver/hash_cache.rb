@@ -6,7 +6,6 @@ module HashCache
   #
   #  Given a file size, mtime and inode, reply with the previous sha1 hash
   ##
-  
   def key(file)
     f = File.stat(file) 
     inode = f.ino
@@ -28,5 +27,4 @@ module HashCache
 
     return hash
   end
-
 end
