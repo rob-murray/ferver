@@ -83,15 +83,8 @@ For example to download file appearing third in the list displayed earlier, requ
 
 Please use the GitHub pull-request mechanism to submit contributions.
 
-After cloning the repo, you can run the web application without having to install the gem package by running a Rake task named `server`, or it's alias `s`.
+After cloning the repo, you can run the web application without having to publish and then install the gem package by calling the executable as per normal.
 
-```bash
-$ rake s
-
-# or
-
-$ rake s /path/to/dir
-```
 
 ### License
 
