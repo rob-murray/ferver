@@ -1,13 +1,17 @@
 #!/usr/bin/env ruby
 
 require 'optparse'
-require 'sinatra'
+$:.unshift File.join( File.dirname(__FILE__), "/../lib")
 require 'ferver'
 
 options = {}
 OptionParser.new do |opts|
   opts.banner = 'Ferver: A simple web app to serve files over HTTP. Version: ' + Ferver::VERSION
   opts.separator ''
+
+  opts.on('-a', '--all', 'Serve hidden files') do |a|
+    options[:hidden] = a
+  end
 
   opts.on('-r', '--recursive', 'Serve all file and all files within folders') do |r|
     options[:recursive] = r
@@ -24,6 +28,7 @@ OptionParser.new do |opts|
 end.parse!
 
 Ferver.configure do |config|
+  config.serve_hidden   = options[:hidden]
   config.recursive      = options[:recursive]
   config.directory_path = options[:directory]
 end

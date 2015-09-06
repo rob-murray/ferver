@@ -48,6 +48,7 @@ module Ferver
 
       files.each do |file_name|
         next if file_name == '.' || file_name == '..'
+        next if file_name =~ /^\./ && Ferver.configuration.serve_hidden == false
 
         if Ferver.configuration.recursive == true
           base     = Pathname.new(configured_file_path)
