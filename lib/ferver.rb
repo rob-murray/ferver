@@ -12,18 +12,18 @@ module Ferver
   DEFAULT_FILE_SERVER_DIR_PATH = './'
 
   class << self
-      attr_accessor :configuration
-  end
+    attr_accessor :configuration
 
-  def self.configuration
-    @configuration ||= Configuration.new
-  end
+    def configuration
+      @configuration ||= Configuration.new
+    end
 
-  def self.reset
-    @configuration = Configuration.new
-  end
+    def reset
+      @configuration = Configuration.new
+    end
 
-  def self.configure
-    yield(configuration)
+    def configure
+      yield(configuration)
+    end
   end
 end
