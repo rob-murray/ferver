@@ -10,7 +10,7 @@ module Ferver
     end
 
     def valid?
-      File.file?(path_to_file) && File.size(path_to_file) > 0
+      File.file?(path_to_file) && !File.zero?(path_to_file)
     end
   end
 end

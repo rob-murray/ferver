@@ -58,6 +58,7 @@ describe Ferver::FileList do
     before(:each) do
       allow(Dir).to receive(:foreach).and_yield('.').and_yield('.').and_yield(file_1.name)
       allow(File).to receive(:file?).and_return(true)
+      allow(File).to receive(:zero?).and_return(false)
     end
 
     it 'should not count current working dir and parent' do
@@ -73,6 +74,7 @@ describe Ferver::FileList do
     before(:each) do
       allow(Dir).to receive(:foreach).and_yield(file_1.name).and_yield('a_directory')
       allow(File).to receive(:file?).twice.and_return(true, false)
+      allow(File).to receive(:zero?).twice.and_return(false, true)
     end
 
     it 'should not count the directory' do
@@ -89,6 +91,7 @@ describe Ferver::FileList do
     before do
       allow(Dir).to receive(:foreach).and_yield(files[0]).and_yield(files[1])
       allow(File).to receive(:file?).twice.and_return(true)
+      allow(File).to receive(:zero?).twice.and_return(false)
     end
 
     it 'should count all files' do
@@ -110,6 +113,7 @@ describe Ferver::FileList do
     before(:each) do
       allow(Dir).to receive(:foreach).and_yield(file_1.name).and_yield(file_2.name)
       allow(File).to receive(:file?).and_return(true)
+      allow(File).to receive(:zero?).and_return(false)
     end
 
     context 'when requesting valid file_id' do
