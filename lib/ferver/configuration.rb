@@ -13,5 +13,6 @@ module Ferver
     def serve_hidden
       @serve_hidden || false
     end
+    alias_method :serve_hidden?, :serve_hidden
   end
 end
