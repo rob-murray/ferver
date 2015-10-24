@@ -17,6 +17,7 @@ Here's the spec for **ferver**:
 * available over http
 * provide a list of files as html and json
 * ignore directories
+* ignore dotfiles - turn off with setting
 * serve files as individual files
 * minimal config
 * able to specify the directory to serve files from
@@ -41,15 +42,25 @@ $ ferver
 
 ##### Use a specific directory
 
-For exmple, to serve files from **/Users/rob/Projects/ferver/** directory pass the path in as below;
+For exmple, to serve files from **/Users/rob/Projects/ferver/** directory pass the path in as below using the `--directory` option.
 
 ```bash
 $ ferver -d /Users/rob/Projects/ferver/
 ````
 
+##### Serve all files
+
+By default, dotfiles will be hidden. Use the `--all` option to serve all files.
+
+```bash
+$ ferver -a
+````
+
+> Note that zero size files will always be hidden.
+
 ##### Command line help
 
-For a list of arguments just use the `-h` switch.
+For a list of arguments just use the `--help` switch.
 
 ```bash
 $ ferver -h
