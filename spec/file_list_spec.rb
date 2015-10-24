@@ -87,9 +87,8 @@ describe Ferver::FileList do
   end
 
   context 'when path directory contains valid files' do
-    let(:files) { [file_1.name, file_2.name] }
     before do
-      allow(Dir).to receive(:foreach).and_yield(files[0]).and_yield(files[1])
+      allow(Dir).to receive(:foreach).and_yield(file_1.name).and_yield(file_2.name)
       allow(File).to receive(:file?).twice.and_return(true)
       allow(File).to receive(:zero?).twice.and_return(false)
     end
@@ -98,11 +97,15 @@ describe Ferver::FileList do
       expect(subject.size).to eq(2)
     end
 
-    describe 'iterating over files list' do
+    describe "ordering" do
+      let(:file_2) { double('file', name: 'alpha') }
+      let(:file_1) { double('file', name: 'zeta') }
+      let(:ordered_files) { [file_2.name, file_1.name] }
+
       it 'should yield files in order' do
         i = 0
         subject.each do | file |
-          expect(file.name).to eq(files[i])
+          expect(file.name).to eq(ordered_files[i])
           i += 1
         end
       end

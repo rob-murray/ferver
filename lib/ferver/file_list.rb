@@ -12,9 +12,8 @@ module Ferver
       fail ArgumentError, 'No path is specified' if path.empty?
       fail DirectoryNotFoundError unless Dir.exist?(path)
 
-      @files = []
       @configured_file_path = File.expand_path(path)
-      find_files
+      @files = find_files.sort_by! { |f| f.name.downcase }
     end
 
     def each(&block)
@@ -39,14 +38,14 @@ module Ferver
     # Iterate through files in specified dir for files
     #
     def find_files
-      @files = []
+      [].tap do |results|
+        Dir.foreach(configured_file_path) do |file_name|
+          next if file_name == '.' || file_name == '..'
+          next if file_name =~ /^\./ && !Ferver.configuration.serve_hidden?
 
-      Dir.foreach(configured_file_path) do |file_name|
-        next if file_name == '.' || file_name == '..'
-        next if file_name =~ /^\./ && !Ferver.configuration.serve_hidden?
-
-        found_file = FoundFile.new(configured_file_path, file_name)
-        @files << found_file if found_file.valid?
+          found_file = FoundFile.new(configured_file_path, file_name)
+          results << found_file if found_file.valid?
+        end
       end
     end
   end
