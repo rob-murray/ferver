@@ -1,6 +1,22 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 1.3.0 - 2015-10-24 - TBC
+
+### Added
+* Don't serve hidden files by default
+* New `--all` option to serve hidden files
+* Sort files listed alphabetically
+
+### Deprecated
+- Nothing.
+
+### Removed
+- Nothing.
+
+### Fixed
+- Don't serve empty files
+
 ## 1.2.1 - 2014-11-15 - de54826
 
 ### Added
