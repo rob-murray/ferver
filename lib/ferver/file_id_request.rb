@@ -1,4 +1,5 @@
 
+# frozen_string_literal: true
 module Ferver
   class FileIdRequest
     attr_reader :value
@@ -20,13 +21,11 @@ module Ferver
     private
 
     def parse_value(value)
-      begin
-        int_val = Integer(value)
-        @is_valid = true
-        int_val
-      rescue
-        @is_valid = false
-      end
+      int_val = Integer(value)
+      @is_valid = true
+      int_val
+    rescue
+      @is_valid = false
     end
   end
 end

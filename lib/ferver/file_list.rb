@@ -1,4 +1,5 @@
-require 'forwardable'
+# frozen_string_literal: true
+require "forwardable"
 
 # A representation of Ferver's file list
 #
@@ -9,8 +10,8 @@ module Ferver
     # Create a new instance with a path
     #
     def initialize(path)
-      fail ArgumentError, 'No path is specified' if path.empty?
-      fail DirectoryNotFoundError unless Dir.exist?(path)
+      raise ArgumentError, "No path is specified" if path.empty?
+      raise DirectoryNotFoundError unless Dir.exist?(path)
 
       @configured_file_path = File.expand_path(path)
       @files = find_files.sort_by! { |f| f.name.downcase }
@@ -40,7 +41,7 @@ module Ferver
     def find_files
       [].tap do |results|
         Dir.foreach(configured_file_path) do |file_name|
-          next if file_name == '.' || file_name == '..'
+          next if file_name == "." || file_name == ".."
           next if file_name =~ /^\./ && !Ferver.configuration.serve_hidden?
 
           found_file = FoundFile.new(configured_file_path, file_name)

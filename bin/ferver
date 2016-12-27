@@ -1,19 +1,20 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
-require 'optparse'
-$:.unshift File.join( File.dirname(__FILE__), "/../lib")
-require 'ferver'
+require "optparse"
+$LOAD_PATH.unshift File.join(File.dirname(__FILE__), "/../lib")
+require "ferver"
 
 options = {}
 OptionParser.new do |opts|
-  opts.banner = 'Ferver: A simple web app to serve files over HTTP. Version: ' + Ferver::VERSION
-  opts.separator ''
+  opts.banner = "Ferver: A simple web app to serve files over HTTP. Version: " + Ferver::VERSION
+  opts.separator ""
 
-  opts.on('-a', '--all', 'Serve hidden files') do |a|
+  opts.on("-a", "--all", "Serve hidden files") do |a|
     options[:hidden] = a
   end
 
-  opts.on('-d', '--directory [DIRECTORY]', 'Specify the path to the directory to serve files from [optional]') do |directory|
+  opts.on("-d", "--directory [DIRECTORY]", "Specify the path to the directory to serve files from [optional]") do |directory|
     options[:directory] = directory
   end
 

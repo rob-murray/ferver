@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Ferver
   class Configuration
     attr_accessor :directory_path, :serve_hidden
@@ -13,6 +14,6 @@ module Ferver
     def serve_hidden
       @serve_hidden || false
     end
-    alias_method :serve_hidden?, :serve_hidden
+    alias serve_hidden? serve_hidden
   end
 end
