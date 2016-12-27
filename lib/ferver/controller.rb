@@ -28,7 +28,7 @@ module Ferver
 
     # list files
     get "/files" do
-      if request.preferred_type.to_s == "application/json"
+      if json_request?
         content_type :json
 
         ferver_list.map(&:name).to_json
@@ -41,9 +41,7 @@ module Ferver
 
     # download file
     get "/files/:id" do
-      send_file(
-        @file.path_to_file, disposition: "attachment", filename: @file.name
-      )
+      send_file @file.path_to_file, disposition: String.new("attachment"), filename: @file.name
     end
 
     private
@@ -70,6 +68,10 @@ module Ferver
 
     def current_full_path
       File.expand_path(current_ferver_path)
+    end
+
+    def json_request?
+      request.preferred_type.to_s == "application/json"
     end
   end
 end
