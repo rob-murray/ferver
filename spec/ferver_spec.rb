@@ -1,7 +1,5 @@
 # frozen_string_literal: true
-require "spec_helper"
-
-describe "ferver" do
+RSpec.describe "ferver" do
   let(:file_list) { double("Ferver::FileList") }
 
   context "given a request to the server root" do
@@ -39,6 +37,11 @@ describe "ferver" do
       before do
         Ferver.configure do |conf|
           conf.directory_path = "/foo"
+        end
+      end
+      after do
+        Ferver.configure do |conf|
+          conf.directory_path = nil
         end
       end
 

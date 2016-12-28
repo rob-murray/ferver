@@ -1,7 +1,5 @@
 # frozen_string_literal: true
-require "spec_helper"
-
-describe Ferver::FileList do
+RSpec.describe Ferver::FileList do
   let(:file_1) { double("file", name: "file1") }
   let(:file_2) { double("file", name: "file2") }
 

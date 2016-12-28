@@ -1,7 +1,5 @@
 # frozen_string_literal: true
-require "spec_helper"
-
-describe Ferver::Configuration do
+RSpec.describe Ferver::Configuration do
   subject { described_class.new }
 
   describe "configured directory path" do

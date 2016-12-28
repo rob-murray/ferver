@@ -1,7 +1,5 @@
 # frozen_string_literal: true
-require "spec_helper"
-
-describe Ferver::FileIdRequest do
+RSpec.describe Ferver::FileIdRequest do
   describe "creating new instance" do
     context "when valid Integer is passed" do
       subject { Ferver::FileIdRequest.new(1) }
