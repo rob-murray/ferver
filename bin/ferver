@@ -25,8 +25,8 @@ OptionParser.new do |opts|
 end.parse!
 
 Ferver.configure do |config|
-  config.serve_hidden = options[:hidden]
-  config.directory_path = options[:directory]
+  config.serve_hidden = options[:hidden] if options[:hidden]
+  config.directory_path = options[:directory] if options[:directory]
 end
 Ferver::App.set :environment, :production
 

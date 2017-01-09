@@ -5,7 +5,7 @@ RSpec.describe Ferver::Configuration do
   describe "configured directory path" do
     context "with no path set" do
       it "should return default path" do
-        expect(subject.directory_path).to eq(Ferver::DEFAULT_FILE_SERVER_DIR_PATH)
+        expect(subject.directory_path).to eq("./")
       end
     end
 
@@ -33,6 +33,13 @@ RSpec.describe Ferver::Configuration do
 
         expect(subject.serve_hidden?).to be true
       end
+    end
+  end
+
+  describe "#directory" do
+    it "is a FerverDirectory with configuration" do
+      expect(Ferver::FerverDirectory).to receive(:new).with(subject).and_call_original
+      expect(subject.directory).to be_instance_of Ferver::FerverDirectory
     end
   end
 end

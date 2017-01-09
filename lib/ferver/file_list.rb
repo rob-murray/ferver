@@ -1,53 +1,28 @@
 # frozen_string_literal: true
-require "forwardable"
-
-# A representation of Ferver's file list
-#
 module Ferver
+  # A representation of Ferver's file list
   class FileList
     include Enumerable
 
-    # Create a new instance with a path
+    # Create a new instance with given directory
     #
-    def initialize(path)
-      raise ArgumentError, "No path is specified" if path.empty?
-      raise DirectoryNotFoundError unless Dir.exist?(path)
-
-      @configured_file_path = File.expand_path(path)
-      @files = find_files.sort_by! { |f| f.name.downcase }
+    def initialize(files)
+      @files = files.sort_by { |f| f.name.downcase }
     end
 
     def each(&block)
-      files.each(&block)
+      @files.each(&block)
     end
 
     def size
-      files.size
+      @files.size
     end
 
-    # Filename by its index
-    # An id out of range with raise IndexError
+    # Fetch a file by its index
+    # An id out of range with raise FileNotFoundError
     #
     def file_by_id(id)
-      files.fetch(id)
-    end
-
-    private
-
-    attr_reader :configured_file_path, :files
-
-    # Iterate through files in specified dir for files
-    #
-    def find_files
-      [].tap do |results|
-        Dir.foreach(configured_file_path) do |file_name|
-          next if file_name == "." || file_name == ".."
-          next if file_name =~ /^\./ && !Ferver.configuration.serve_hidden?
-
-          found_file = FoundFile.new(configured_file_path, file_name)
-          results << found_file if found_file.valid?
-        end
-      end
+      @files.at(id) || raise(FileNotFoundError, "File id=#{id} not found")
     end
   end
 end

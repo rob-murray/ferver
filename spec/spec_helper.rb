@@ -12,6 +12,7 @@ require "rubygems"
 require "sinatra"
 require "rack/test"
 require "rspec-html-matchers"
+require "byebug"
 
 # force the environment to 'test'
 ENV["RACK_ENV"] = "test"

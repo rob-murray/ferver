@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 RSpec.describe "ferver" do
-  let(:file_list) { double("Ferver::FileList") }
+  let(:ferver_directory) { double("Ferver::FerverDirectory", path: "/", full_path: "/path/to/files", found_files: []) }
+  before do
+    Ferver.configure do |conf|
+      conf.directory = ferver_directory
+    end
+  end
 
   context "given a request to the server root" do
     before do
@@ -19,42 +24,10 @@ RSpec.describe "ferver" do
     end
   end
 
-  describe "choosing directory to serve files from" do
-    before do
-      allow(file_list).to receive(:each_with_index)
-      allow(file_list).to receive(:size).and_return(0)
-    end
-
-    context "when no directory is specified" do
-      it "will use default directory" do
-        expect(Ferver::FileList).to receive(:new).with("./").and_return(file_list)
-
-        get "/files"
-      end
-    end
-
-    context "when the directory passed via configuration" do
-      before do
-        Ferver.configure do |conf|
-          conf.directory_path = "/foo"
-        end
-      end
-      after do
-        Ferver.configure do |conf|
-          conf.directory_path = nil
-        end
-      end
-
-      it "will use directory specified" do
-        expect(Ferver::FileList).to receive(:new).with("/foo").and_return(file_list)
-
-        get "/files"
-      end
-    end
-
+  describe "configuration error" do
     context "when directory does not exist" do
       before do
-        allow(Ferver::FileList).to receive(:new).and_raise(Ferver::DirectoryNotFoundError)
+        allow(ferver_directory).to receive(:found_files).and_raise(Ferver::DirectoryNotFoundError)
       end
 
       it "will return server error status" do
@@ -67,9 +40,7 @@ RSpec.describe "ferver" do
 
   context "given an empty list of files" do
     before do
-      allow(file_list).to receive(:each_with_index)
-      allow(file_list).to receive(:size).and_return(0)
-      allow(Ferver::FileList).to receive(:new).and_return(file_list)
+      allow(ferver_directory).to receive(:found_files).and_return(EMPTY_FILE_LIST)
     end
 
     context "when no content-type is requested" do
@@ -87,8 +58,6 @@ RSpec.describe "ferver" do
 
     context "when json content-type is requested" do
       before do
-        allow(file_list).to receive(:map).and_return([])
-
         get "/files", {}, "HTTP_ACCEPT" => "application/json"
       end
 
@@ -108,9 +77,7 @@ RSpec.describe "ferver" do
     let(:file_1) { double("file", name: "file1") }
     let(:file_2) { double("file", name: "file2") }
     before do
-      allow(file_list).to receive(:each_with_index).and_yield(file_1, 1).and_yield(file_2, 2)
-      allow(file_list).to receive(:size).and_return(2)
-      allow(Ferver::FileList).to receive(:new).and_return(file_list)
+      allow(ferver_directory).to receive(:found_files).and_return([file_1, file_2])
     end
 
     describe "file list request" do
@@ -136,8 +103,6 @@ RSpec.describe "ferver" do
 
       context "when json content-type is requested" do
         before do
-          allow(file_list).to receive(:map).and_return([file_1.name, file_2.name])
-
           get "/files", {}, "HTTP_ACCEPT" => "application/json"
         end
 
@@ -157,7 +122,6 @@ RSpec.describe "ferver" do
     describe "downloading a file" do
       context "when requesting a file out of range" do
         before do
-          allow(file_list).to receive(:file_by_id).with(3).and_raise(IndexError)
           get "/files/3"
         end
 
