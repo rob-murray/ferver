@@ -48,17 +48,13 @@ RSpec.describe Ferver::FerverDirectory do
   end
 
   describe "#found_files" do
-    let(:hidden) { double("file", name: ".hidden") }
-    let(:empty) { double("file", name: "zero file") }
-    let(:normal) { double("file", name: "normal file") }
-
     before(:each) do
       allow(Dir).to receive(:foreach)
         .and_yield(".")
         .and_yield("..")
-        .and_yield(empty.name)
-        .and_yield(normal.name)
-        .and_yield(hidden.name)
+        .and_yield("zero file")
+        .and_yield("normal_file.txt")
+        .and_yield(".hidden")
       allow(File).to receive(:file?).at_most(3).times.and_return(true, true, true)
       allow(File).to receive(:zero?).at_most(3).times.and_return(true, false, false)
     end
@@ -67,7 +63,7 @@ RSpec.describe Ferver::FerverDirectory do
       let(:serve_hidden) { true }
 
       it "returns list of files matched" do
-        expect(subject.found_files.map(&:name)).to eq ["normal file", ".hidden"]
+        expect(subject.found_files.map(&:name)).to eq ["normal_file.txt", ".hidden"]
       end
     end
 
