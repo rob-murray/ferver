@@ -71,7 +71,7 @@ RSpec.describe Ferver::FerverDirectory do
       let(:serve_hidden) { false }
 
       it "returns list of files matched" do
-        expect(subject.found_files.map(&:name)).to eq ["normal file"]
+        expect(subject.found_files.map(&:name)).to eq ["normal_file.txt"]
       end
     end
   end
