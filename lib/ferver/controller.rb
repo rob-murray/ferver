@@ -1,19 +1,20 @@
-require 'sinatra'
-require 'sinatra/base'
-require 'json'
-require_relative './directory_not_found_error'
-require_relative './configuration'
+# frozen_string_literal: true
+require "sinatra"
+require "sinatra/base"
+require "json"
 
 module Ferver
   class Controller < Sinatra::Base
     before do
-      @ferver_list = FileList.new(current_ferver_path)
+      @ferver_list = FileList.new(Ferver.configuration.directory.found_files)
     end
 
-    before '/files/:id' do
-      halt(400, 'Bad request') unless valid_file_request?
-
-      find_file!
+    before "/files/:id" do
+      begin
+        @file = find_file! Integer(params[:id])
+      rescue ArgumentError
+        halt 400, "Bad request"
+      end
     end
 
     error Ferver::DirectoryNotFoundError do
@@ -21,13 +22,13 @@ module Ferver
     end
 
     # redirect to file list
-    get '/' do
-      redirect to('/files')
+    get "/" do
+      redirect to("/files")
     end
 
     # list files
-    get '/files' do
-      if request.preferred_type.to_s == 'application/json'
+    get "/files" do
+      if json_request?
         content_type :json
 
         ferver_list.map(&:name).to_json
@@ -39,36 +40,30 @@ module Ferver
     end
 
     # download file
-    get '/files/:id' do
-      send_file(
-        @file.path_to_file, disposition: 'attachment', filename: @file.name
-      )
+    get "/files/:id" do
+      send_file @file.path_to_file, disposition: String.new("attachment"), filename: @file.name
     end
 
     private
 
     attr_reader :ferver_list
 
-    def file_id_request
-      @file_id_request ||= FileIdRequest.new(params[:id])
+    def find_file!(file_id)
+      ferver_list.file_by_id(file_id)
+    rescue Ferver::FileNotFoundError => error
+      halt 404, error.message
     end
 
-    def valid_file_request?
-      file_id_request.valid?
-    end
-
-    def find_file!
-      @file = ferver_list.file_by_id(file_id_request.value)
-    rescue IndexError
-      halt 404, 'File requested not found.'
+    def json_request?
+      request.preferred_type.to_s == "application/json"
     end
 
     def current_ferver_path
-      Ferver.configuration.directory_path
+      Ferver.configuration.directory.path
     end
 
     def current_full_path
-      File.expand_path(current_ferver_path)
+      Ferver.configuration.directory.full_path
     end
   end
 end
