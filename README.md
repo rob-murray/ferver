@@ -56,6 +56,8 @@ By default, dotfiles will be hidden. Use the `--all` option to serve all files.
 $ ferver -a
 ````
 
+> Note that zero size files will always be hidden.
+
 ##### Configure webserver
 
 If required, you can configure the bind address or port number used by the webserver. By default this is `0.0.0.0` and port `4567` which means the server is accessible from outside your machine (if firewall permits). For example if you used the configuration below then it would only be accessible from local machine and on port `9999`.
@@ -63,8 +65,6 @@ If required, you can configure the bind address or port number used by the webse
 ```bash
 $ ferver -p 9999 -b 127.0.0.1
 ````
-
-> Note that zero size files will always be hidden.
 
 ##### Command line help
 
