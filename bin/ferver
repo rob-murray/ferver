@@ -10,12 +10,20 @@ OptionParser.new do |opts|
   opts.banner = "Ferver: A simple web app to serve files over HTTP. Version: " + Ferver::VERSION
   opts.separator ""
 
-  opts.on("-a", "--all", "Serve hidden files") do |a|
+  opts.on("-a", "--all", "Serve hidden files. False by default [optional]") do |a|
     options[:hidden] = a
   end
 
   opts.on("-d", "--directory [DIRECTORY]", "Specify the path to the directory to serve files from [optional]") do |directory|
     options[:directory] = directory
+  end
+
+  opts.on("-b", "--bind [IP or hostname]", "Set the hostname or IP address of the interface to listen on when running. Defaults to '0.0.0.0' [optional]") do |bind_address|
+    options[:bind_address] = bind_address
+  end
+
+  opts.on("-p", "--port [PORT]", "Set the port used by Ferver server. Defaults to 4567 [optional]") do |port|
+    options[:port] = port
   end
 
   opts.on("-h", "--help", "Displays help") do
@@ -29,6 +37,8 @@ Ferver.configure do |config|
   config.directory_path = options[:directory] if options[:directory]
 end
 Ferver::App.set :environment, :production
+Ferver::App.set :bind, options[:bind_address] if options[:bind_address]
+Ferver::App.set :port, options[:port] if options[:port]
 
 # run!
 Ferver::App.run!
