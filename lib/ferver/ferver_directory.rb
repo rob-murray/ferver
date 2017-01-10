@@ -26,7 +26,7 @@ module Ferver
 
     attr_reader :configuration
 
-    # Iterate through files in specified dir for files
+    # Iterate through files in specified dir for valid files
     #
     def find_files
       [].tap do |results|
