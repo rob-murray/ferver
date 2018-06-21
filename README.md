@@ -5,7 +5,6 @@
 [![Build Status](https://travis-ci.org/rob-murray/ferver.svg?branch=master)](https://travis-ci.org/rob-murray/ferver)
 [![Code Climate](https://codeclimate.com/github/rob-murray/ferver.png)](https://codeclimate.com/github/rob-murray/ferver)
 [![Coverage Status](https://coveralls.io/repos/rob-murray/ferver/badge.svg?branch=master&service=github)](https://coveralls.io/github/rob-murray/ferver?branch=master)
-[![Dependency Status](https://gemnasium.com/rob-murray/ferver.svg)](https://gemnasium.com/rob-murray/ferver)
 [![Gem Version](https://badge.fury.io/rb/ferver.svg)](http://badge.fury.io/rb/ferver)
 
 ### Description
