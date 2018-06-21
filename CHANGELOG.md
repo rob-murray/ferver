@@ -1,6 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 1.4.0 - 2018-06-21
+
+### Added
+* Update to sinatra v2
+
+### Deprecated
+- Nothing.
+
+### Removed
+- Nothing.
+
 ## 1.3.0 - 2015-10-24 - TBC
 
 ### Added
