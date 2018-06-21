@@ -42,7 +42,7 @@ $ ferver
 
 ##### Use a specific directory
 
-For exmple, to serve files from **/Users/rob/Projects/ferver/** directory pass the path in as below using the `--directory` option.
+For example, to serve files from **/Users/rob/Projects/ferver/** directory pass the path in as below using the `--directory` option.
 
 ```bash
 $ ferver -d /Users/rob/Projects/ferver/
