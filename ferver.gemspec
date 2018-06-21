@@ -22,14 +22,14 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
 
   spec.add_development_dependency "bundler"
-  spec.add_development_dependency "nokogiri", "~> 1.6.0"
+  spec.add_development_dependency "nokogiri"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec", "~> 3.0"
-  spec.add_development_dependency "rack-test", "~> 0.6"
-  spec.add_development_dependency "rspec-html-matchers", "~> 0.6"
-  spec.add_development_dependency "coveralls", "~> 0.7"
+  spec.add_development_dependency "rack-test"
+  spec.add_development_dependency "rspec-html-matchers"
+  spec.add_development_dependency "coveralls"
   spec.add_development_dependency "codeclimate-test-reporter"
   spec.add_development_dependency "byebug"
 
-  spec.add_dependency "sinatra", "~> 1.4"
+  spec.add_dependency "sinatra"
 end
